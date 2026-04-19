@@ -1,6 +1,7 @@
 import Navbar from '@/components/sections/Navbar'
 import Hero from '@/components/sections/Hero'
 import Marquee from '@/components/sections/Marquee'
+import SocialProof from '@/components/sections/SocialProof'
 import Servicios from '@/components/sections/Servicios'
 import Skills from '@/components/sections/Skills'
 import ComoTrabajamos from '@/components/sections/ComoTrabajamos'
@@ -15,6 +16,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Marquee />
+      <SocialProof />
       <Servicios />
       <Skills />
       <ComoTrabajamos />

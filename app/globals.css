@@ -45,6 +45,28 @@ body {
   color: #080808;
 }
 
+/* ── Accessibility: focus states (skill requirement) ── */
+:focus-visible {
+  outline: 2px solid #C9A84C;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Accessibility: prefers-reduced-motion (skill requirement) ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── cursor-pointer on all interactive elements (skill requirement) ── */
+button, [role="button"], a, label[for], summary, [tabindex]:not([tabindex="-1"]) {
+  cursor: pointer;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

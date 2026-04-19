@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, type Variants } from 'framer-motion'
+import { motion, type Variants, useReducedMotion } from 'framer-motion'
 import dynamic from 'next/dynamic'
 
 const DottedSurface = dynamic(() => import('@/components/ui/dotted-surface'), {
@@ -30,6 +30,16 @@ const wordVariants: Variants = {
 }
 
 export default function Hero() {
+  const shouldReduce = useReducedMotion()
+
+  const resolvedContainerVariants: Variants = shouldReduce
+    ? { hidden: {}, visible: {} }
+    : containerVariants
+
+  const resolvedWordVariants: Variants = shouldReduce
+    ? { hidden: { opacity: 1, y: 0, filter: 'blur(0px)' }, visible: { opacity: 1, y: 0, filter: 'blur(0px)' } }
+    : wordVariants
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#080808]">
       {/* Three.js Background */}
@@ -57,16 +67,17 @@ export default function Hero() {
           Agencia de desarrollo web · Argentina
         </motion.div>
 
-        {/* Title */}
+        {/* Title — clamp() for Exaggerated Minimalism (skill: style-match) */}
         <motion.h1
-          className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight tracking-tight text-[#F5F5F3] mb-6"
-          variants={containerVariants}
+          className="font-extrabold leading-[1.05] tracking-tight text-[#F5F5F3] mb-6"
+          style={{ fontSize: 'clamp(2.8rem, 8vw, 6rem)' }}
+          variants={resolvedContainerVariants}
           initial="hidden"
           animate="visible"
         >
           <span className="flex flex-wrap justify-center gap-x-4 mb-1">
             {titleWords1.map((word) => (
-              <motion.span key={word} variants={wordVariants}>
+              <motion.span key={word} variants={resolvedWordVariants}>
                 {word}
               </motion.span>
             ))}
@@ -75,7 +86,7 @@ export default function Hero() {
             {titleWords2.map((word) => (
               <motion.span
                 key={word}
-                variants={wordVariants}
+                variants={resolvedWordVariants}
                 className="gold-gradient"
               >
                 {word}
