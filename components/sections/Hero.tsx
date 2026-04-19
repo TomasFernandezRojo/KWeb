@@ -1,11 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'
-import dynamic from 'next/dynamic'
-
-const DottedSurface = dynamic(() => import('@/components/ui/dotted-surface'), {
-  ssr: false,
-})
+import { FloatingPaths } from '@/components/ui/background-paths'
 
 const WA_LINK = 'https://wa.me/5493072074300'
 
@@ -13,18 +9,24 @@ export default function Hero() {
   const shouldReduce = useReducedMotion()
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#080808]">
-      <DottedSurface />
+    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#080808]">
+      {/* FloatingPaths background — adapted to dark theme */}
+      <div className="absolute inset-0 text-white">
+        <FloatingPaths position={1} />
+        <FloatingPaths position={-1} />
+      </div>
 
+      {/* Bottom fade into next section */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 100%, rgba(8,8,8,0.9) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 50% 100%, rgba(8,8,8,0.95) 0%, transparent 55%)',
         }}
       />
 
-      <div className="relative z-10 flex flex-col items-center text-center gap-8">
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center text-center gap-8 px-4">
         <motion.h1
           initial={shouldReduce ? false : { opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
