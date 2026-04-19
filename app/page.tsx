@@ -5,7 +5,7 @@ import SocialProof from '@/components/sections/SocialProof'
 import Servicios from '@/components/sections/Servicios'
 import Skills from '@/components/sections/Skills'
 import ComoTrabajamos from '@/components/sections/ComoTrabajamos'
-import Portfolio from '@/components/sections/Portfolio'
+import Rubros from '@/components/sections/Rubros'
 import FAQ from '@/components/sections/FAQ'
 import CTAFinal from '@/components/sections/CTAFinal'
 import MotionFooter from '@/components/ui/motion-footer'
@@ -20,7 +20,7 @@ export default function Home() {
       <Servicios />
       <Skills />
       <ComoTrabajamos />
-      <Portfolio />
+      <Rubros />
       <FAQ />
       <CTAFinal />
       <MotionFooter />
