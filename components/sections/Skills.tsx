@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import AnimatedCardStack from '@/components/ui/animate-card-animation'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -274,6 +275,11 @@ export default function Skills() {
             Trabajamos con las herramientas más modernas del mercado para
             garantizar webs rápidas, seguras y escalables.
           </p>
+        </div>
+
+        {/* Animated card preview */}
+        <div className="mb-20">
+          <AnimatedCardStack />
         </div>
 
         {/* Categories */}
