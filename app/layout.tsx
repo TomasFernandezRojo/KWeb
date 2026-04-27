@@ -1,46 +1,46 @@
 import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Syne, DM_Sans } from 'next/font/google'
 import './globals.css'
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const syne = Syne({
   subsets: ['latin'],
-  weight: ['200', '300', '400', '500', '600', '700', '800'],
-  variable: '--font-jakarta',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-syne',
+  display: 'swap',
+})
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-dm',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
   title: 'KWeb — Desarrollo Web Profesional en Argentina',
   description:
-    'Diseñamos webs que generan resultados. Landing pages, tiendas online, webs institucionales, portfolios y proyectos a medida.',
+    'Diseñamos y desarrollamos webs personalizadas que generan clientes. Sin templates, sin límites. Landing pages, tiendas online y proyectos a medida.',
   keywords: [
     'desarrollo web argentina',
     'diseño web profesional',
-    'landing page',
-    'tienda online',
-    'ecommerce',
-    'portfolio web',
+    'landing page argentina',
+    'tienda online mercadopago',
     'agencia web argentina',
+    'paginas web a medida',
   ],
   openGraph: {
     title: 'KWeb — Desarrollo Web Profesional en Argentina',
     description:
-      'Diseñamos webs que generan resultados. Landing pages, tiendas online, webs institucionales, portfolios y proyectos a medida.',
+      'Diseñamos y desarrollamos webs personalizadas que generan clientes. Sin templates, sin límites.',
     locale: 'es_AR',
     type: 'website',
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className="dark" suppressHydrationWarning>
-      <body
-        className={`${plusJakartaSans.variable} font-jakarta antialiased bg-[#080808] text-[#F5F5F3]`}
-      >
+    <html lang="es" suppressHydrationWarning>
+      <body className={`${syne.variable} ${dmSans.variable} font-dm antialiased bg-white text-stone-900`}>
         {children}
       </body>
     </html>

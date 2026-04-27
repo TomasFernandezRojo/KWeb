@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 :root {
-  --background: #080808;
-  --foreground: #F5F5F3;
+  --bg: #ffffff;
+  --bg-alt: #F7F6F3;
+  --fg: #0A0A0A;
+  --fg-muted: #666666;
   --gold: #C9A84C;
+  --gold-light: rgba(201,168,76,0.12);
+  --border: rgba(0,0,0,0.08);
 }
 
 * {
@@ -19,75 +23,60 @@
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: #C9A84C #111;
+  scrollbar-color: #C9A84C #f0f0f0;
 }
 
 body {
-  background-color: #080808;
-  color: #F5F5F3;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-dm), 'DM Sans', sans-serif;
   overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
-  width: 5px;
-}
-::-webkit-scrollbar-track {
-  background: #111;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #C9A84C;
-  border-radius: 10px;
-}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #f0f0f0; }
+::-webkit-scrollbar-thumb { background-color: #C9A84C; border-radius: 10px; }
 
-::selection {
-  background: #C9A84C;
-  color: #080808;
-}
+::selection { background: #C9A84C; color: #fff; }
 
-/* ── Accessibility: focus states (skill requirement) ── */
 :focus-visible {
   outline: 2px solid #C9A84C;
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* ── Accessibility: prefers-reduced-motion (skill requirement) ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }
 
-/* ── cursor-pointer on all interactive elements (skill requirement) ── */
-button, [role="button"], a, label[for], summary, [tabindex]:not([tabindex="-1"]) {
+button, [role="button"], a, summary {
   cursor: pointer;
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .font-syne { font-family: var(--font-syne), 'Syne', sans-serif; }
+  .font-dm { font-family: var(--font-dm), 'DM Sans', sans-serif; }
+
+  .text-balance { text-wrap: balance; }
+
+  .gold-text {
+    color: #C9A84C;
   }
+
   .gold-gradient {
     background: linear-gradient(135deg, #C9A84C 0%, #E4C06E 50%, #A8893A 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .gold-border {
-    border: 1px solid rgba(201, 168, 76, 0.3);
-  }
-  .glass {
-    background: rgba(8, 8, 8, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(201, 168, 76, 0.15);
-  }
-  .card-3d {
+
+  .card-tilt {
     transform-style: preserve-3d;
-    transition: transform 0.4s ease;
+    transition: transform 0.3s ease;
+    will-change: transform;
   }
 }

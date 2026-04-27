@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -10,45 +9,33 @@ gsap.registerPlugin(ScrollTrigger)
 const projects = [
   {
     id: 1,
-    title: 'E-commerce de Moda',
+    title: 'Kloths',
     category: 'Tienda Online',
-    image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=800',
-    span: 'col-span-1 md:col-span-2',
+    description: 'E-commerce de surfwear con carrito, MercadoPago y gestión de stock.',
+    url: 'https://kloths.com.ar',
+    gradient: 'linear-gradient(135deg, #0077B6 0%, #00B4D8 50%, #90E0EF 100%)',
+    tag: 'kloths.com.ar',
+    span: 'md:col-span-2',
   },
   {
     id: 2,
-    title: 'Restaurante Gourmet',
-    category: 'Web para Restaurant',
-    image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800',
-    span: 'col-span-1',
+    title: 'Trigga',
+    category: 'Agencia Web',
+    description: 'Landing institucional para agencia de automatizaciones con IA.',
+    url: 'https://trigga.vercel.app',
+    gradient: 'linear-gradient(135deg, #0A0A0A 0%, #1a1a1a 50%, #22D68A22 100%)',
+    tag: 'trigga.vercel.app',
+    span: 'md:col-span-1',
   },
   {
     id: 3,
-    title: 'Dashboard Corporativo',
-    category: 'Web Institucional',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-    span: 'col-span-1',
-  },
-  {
-    id: 4,
-    title: 'Portfolio Fotógrafo',
-    category: 'Portfolio Creativo',
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800',
-    span: 'col-span-1',
-  },
-  {
-    id: 5,
-    title: 'Tienda de Tecnología',
-    category: 'Tienda Online',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800',
-    span: 'col-span-1',
-  },
-  {
-    id: 6,
-    title: 'Consultora Empresarial',
-    category: 'Landing Page',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800',
-    span: 'col-span-1 md:col-span-2',
+    title: 'OnWay',
+    category: 'App Mobile',
+    description: 'Marketplace de crowdshipping — viajeros que llevan paquetes de camino.',
+    url: '#',
+    gradient: 'linear-gradient(135deg, #0066FF 0%, #0052CC 60%, #003D99 100%)',
+    tag: 'En desarrollo',
+    span: 'md:col-span-1',
   },
 ]
 
@@ -59,107 +46,98 @@ export default function Portfolio() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const cards = gridRef.current?.querySelectorAll('.portfolio-card') ?? []
-
       gsap.fromTo(
         cards,
-        { opacity: 0, y: 50, scale: 0.96 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
-          scale: 1,
-          stagger: 0.1,
-          duration: 0.9,
+          stagger: 0.12,
+          duration: 0.8,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: gridRef.current,
-            start: 'top 70%',
+            start: 'top 75%',
             toggleActions: 'play none none none',
           },
         }
       )
-
-      // Parallax on images
-      cards.forEach((card) => {
-        const img = card.querySelector('img')
-        if (!img) return
-        gsap.fromTo(
-          img,
-          { scale: 1.15, y: '-10%' },
-          {
-            scale: 1.05,
-            y: '5%',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            },
-          }
-        )
-      })
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
+  const handleTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -14
+    card.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg) scale(1.02)`
+  }
+
+  const resetTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)'
+  }
+
   return (
-    <section id="portfolio" ref={sectionRef} className="py-24 md:py-32 bg-[#080808]">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="portfolio" ref={sectionRef} className="py-24 md:py-32 bg-[#F7F6F3]">
+      <div className="max-w-6xl mx-auto px-6">
+
         {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-xs text-[#C9A84C] font-bold uppercase tracking-[0.25em] mb-4">
-            Portfolio
-          </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#F5F5F3] tracking-tight mb-5">
-            Proyectos que hablan
-            <br />
-            <span className="gold-gradient">por sí solos</span>
+        <div className="mb-14">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#C9A84C] mb-3">Portfolio</p>
+          <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-stone-900 tracking-tight">
+            Proyectos reales.
           </h2>
-          <p className="text-[#F5F5F3]/55 text-lg max-w-xl mx-auto">
-            Referencias del tipo de trabajo que realizamos.
-          </p>
         </div>
 
-        {/* Masonry grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-5"
-        >
-          {projects.map((project) => (
+        {/* Grid */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {projects.map((p) => (
             <div
-              key={project.id}
-              className={`portfolio-card ${project.span} group relative overflow-hidden rounded-2xl bg-[#0D0D0D] cursor-pointer`}
-              style={{ height: '280px', opacity: 0 }}
+              key={p.id}
+              className={`portfolio-card ${p.span} card-tilt group relative overflow-hidden rounded-2xl cursor-default`}
+              style={{ height: '300px', opacity: 0, transition: 'transform 0.3s ease' }}
+              onMouseMove={handleTilt}
+              onMouseLeave={resetTilt}
             >
-              {/* Image */}
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              {/* Gradient background */}
+              <div className="absolute inset-0" style={{ background: p.gradient }} />
+
+              {/* Noise overlay */}
+              <div
+                className="absolute inset-0 opacity-[0.03]"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+                }}
               />
 
-              {/* Default overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-transparent opacity-60" />
+              {/* Content */}
+              <div className="absolute inset-0 p-7 flex flex-col justify-between">
+                <div className="flex items-start justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-white/60 border border-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
+                    {p.category}
+                  </span>
+                  {p.url !== '#' && (
+                    <a
+                      href={p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors backdrop-blur-sm"
+                      aria-label={`Ver ${p.title}`}
+                    >
+                      <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+                      </svg>
+                    </a>
+                  )}
+                </div>
 
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-[#080808]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex flex-col items-center justify-center gap-3">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#C9A84C] border border-[rgba(201,168,76,0.4)] px-3 py-1 rounded-full">
-                  {project.category}
-                </span>
-                <h3 className="text-xl font-extrabold text-[#F5F5F3] text-center px-4">
-                  {project.title}
-                </h3>
-              </div>
-
-              {/* Always visible label at bottom */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-0 group-hover:translate-y-full transition-transform duration-400">
-                <span className="text-xs text-[#C9A84C]/80 font-semibold uppercase tracking-widest block mb-1">
-                  {project.category}
-                </span>
-                <h3 className="text-base font-bold text-[#F5F5F3]">{project.title}</h3>
+                <div>
+                  <h3 className="font-syne text-3xl font-extrabold text-white mb-2">{p.title}</h3>
+                  <p className="text-white/60 text-sm leading-relaxed max-w-xs">{p.description}</p>
+                  <p className="text-white/40 text-xs font-mono mt-3">{p.tag}</p>
+                </div>
               </div>
             </div>
           ))}

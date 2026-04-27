@@ -1,12 +1,8 @@
 import Navbar from '@/components/sections/Navbar'
 import Hero from '@/components/sections/Hero'
-import Marquee from '@/components/sections/Marquee'
-import SocialProof from '@/components/sections/SocialProof'
+import Portfolio from '@/components/sections/Portfolio'
 import Servicios from '@/components/sections/Servicios'
-import Skills from '@/components/sections/Skills'
 import ComoTrabajamos from '@/components/sections/ComoTrabajamos'
-import Rubros from '@/components/sections/Rubros'
-import FAQ from '@/components/sections/FAQ'
 import CTAFinal from '@/components/sections/CTAFinal'
 import MotionFooter from '@/components/ui/motion-footer'
 
@@ -15,13 +11,9 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
-      <Marquee />
-      <SocialProof />
+      <Portfolio />
       <Servicios />
-      <Skills />
       <ComoTrabajamos />
-      <Rubros />
-      <FAQ />
       <CTAFinal />
       <MotionFooter />
     </main>

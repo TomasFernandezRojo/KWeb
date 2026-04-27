@@ -8,145 +8,86 @@ gsap.registerPlugin(ScrollTrigger)
 
 const steps = [
   {
-    number: '01',
-    title: 'Nos cuenta su idea',
-    description:
-      'Analizamos su negocio, sus objetivos y lo que necesita para construir la solución correcta.',
+    n: '01',
+    title: 'Nos contás tu idea',
+    description: 'Analizamos tu negocio, tus objetivos y qué necesitás para construir la solución correcta.',
   },
   {
-    number: '02',
-    title: 'Diseñamos la propuesta',
-    description:
-      'Presentamos wireframes y la dirección visual del proyecto para su aprobación.',
+    n: '02',
+    title: 'Diseñamos y desarrollamos',
+    description: 'Construimos tu web con tecnología moderna, diseño único y atención a cada detalle.',
   },
   {
-    number: '03',
-    title: 'Desarrollamos su web',
-    description:
-      'Construimos cada detalle con tecnología moderna, código limpio y atención al diseño.',
-  },
-  {
-    number: '04',
-    title: 'Lanzamos juntos',
-    description:
-      'Publicamos su sitio, lo configuramos y lo acompañamos en el proceso de salida al aire.',
+    n: '03',
+    title: 'Lo lanzamos juntos',
+    description: 'Publicamos tu sitio, lo configuramos y te acompañamos en el proceso de salida al aire.',
   },
 ]
 
 export default function ComoTrabajamos() {
   const sectionRef = useRef<HTMLElement>(null)
-  const lineRef = useRef<SVGPathElement>(null)
   const stepsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate the connecting line
-      if (lineRef.current) {
-        const length = lineRef.current.getTotalLength()
-        gsap.set(lineRef.current, {
-          strokeDasharray: length,
-          strokeDashoffset: length,
-        })
-        gsap.to(lineRef.current, {
-          strokeDashoffset: 0,
-          duration: 2,
-          ease: 'power2.inOut',
+      const cards = stepsRef.current?.querySelectorAll('.step-card') ?? []
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.15,
+          duration: 0.7,
+          ease: 'power3.out',
           scrollTrigger: {
             trigger: stepsRef.current,
-            start: 'top 60%',
-            end: 'bottom 70%',
-            scrub: 1,
+            start: 'top 75%',
+            toggleActions: 'play none none none',
           },
-        })
-      }
-
-      // Animate step cards
-      if (stepsRef.current) {
-        const cards = stepsRef.current.querySelectorAll('.step-card')
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.15,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: stepsRef.current,
-              start: 'top 70%',
-              toggleActions: 'play none none none',
-            },
-          }
-        )
-      }
+        }
+      )
     }, sectionRef)
-
     return () => ctx.revert()
   }, [])
 
   return (
-    <section id="proceso" ref={sectionRef} className="py-24 md:py-32 bg-[#060606] relative overflow-hidden">
-      {/* Background decoration */}
-      <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full pointer-events-none"
-        style={{
-          background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,0.1) 20%, rgba(201,168,76,0.1) 80%, transparent)',
-        }}
-      />
+    <section id="proceso" ref={sectionRef} className="py-24 md:py-32 bg-[#F7F6F3]">
+      <div className="max-w-6xl mx-auto px-6">
 
-      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-20">
-          <p className="text-xs text-[#C9A84C] font-bold uppercase tracking-[0.25em] mb-4">
-            Proceso
-          </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#F5F5F3] tracking-tight">
-            Nuestro proceso
+        <div className="mb-14">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#C9A84C] mb-3">Proceso</p>
+          <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-stone-900 tracking-tight">
+            Simple y claro.
           </h2>
         </div>
 
         {/* Steps */}
-        <div ref={stepsRef} className="relative">
-          {/* Desktop SVG connecting line */}
-          <svg
-            className="hidden lg:block absolute top-8 left-0 right-0 w-full h-4 pointer-events-none"
-            viewBox="0 0 1000 8"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <path
-              ref={lineRef}
-              d="M 100 4 Q 250 4 350 4 Q 500 4 650 4 Q 750 4 900 4"
-              stroke="#C9A84C"
-              strokeWidth="1"
-              fill="none"
-              strokeLinecap="round"
-            />
-          </svg>
+        <div ref={stepsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {steps.map((s, i) => (
+            <div
+              key={s.n}
+              className="step-card relative bg-white rounded-2xl p-8 flex flex-col gap-5 border border-stone-200"
+              style={{ opacity: 0 }}
+            >
+              {/* Number */}
+              <span className="font-syne text-[5rem] font-extrabold leading-none text-stone-100 select-none absolute top-4 right-6">
+                {s.n}
+              </span>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, index) => (
-              <div
-                key={step.number}
-                className="step-card group relative bg-[#0D0D0D] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 flex flex-col gap-4 hover:border-[rgba(201,168,76,0.3)] transition-all duration-300"
-                style={{ opacity: 0 }}
-              >
-                {/* Step number badge */}
-                <div className="w-14 h-14 rounded-full border-2 border-[rgba(201,168,76,0.3)] bg-[rgba(201,168,76,0.06)] flex items-center justify-center group-hover:border-[#C9A84C] group-hover:bg-[rgba(201,168,76,0.12)] transition-all duration-300 mb-2">
-                  <span className="text-[#C9A84C] font-extrabold text-lg">{step.number}</span>
-                </div>
+              {/* Dot connector — desktop */}
+              {i < steps.length - 1 && (
+                <div className="hidden md:block absolute top-10 -right-3 w-6 h-px bg-stone-200" />
+              )}
 
-                {/* Connector dot */}
-                {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-10 -right-4 w-2 h-2 rounded-full bg-[#C9A84C]/40 z-10" />
-                )}
-
-                <h3 className="text-lg font-bold text-[#F5F5F3]">{step.title}</h3>
-                <p className="text-[#F5F5F3]/55 text-sm leading-relaxed">{step.description}</p>
+              <div className="relative z-10 flex flex-col gap-3">
+                <span className="font-syne text-sm font-bold text-[#C9A84C]">{s.n}</span>
+                <h3 className="font-syne text-xl font-bold text-stone-900">{s.title}</h3>
+                <p className="text-stone-500 text-sm leading-relaxed">{s.description}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
