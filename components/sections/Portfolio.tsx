@@ -187,16 +187,9 @@ export default function Portfolio() {
         <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-20 bg-gradient-to-r from-[#F7F6F3] to-transparent" />
         <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-20 bg-gradient-to-l from-[#F7F6F3] to-transparent" />
 
-        <Marquee pauseOnHover className="[--duration:38s] py-3 px-6">
+        <Marquee pauseOnHover className="[--duration:40s] py-4">
           {projects.map((p) => (
             <ProjectCard key={p.id} p={p} />
-          ))}
-        </Marquee>
-
-        {/* Second row — reversed, offset */}
-        <Marquee reverse pauseOnHover className="[--duration:42s] py-3 px-6 mt-5">
-          {[...projects].reverse().map((p) => (
-            <ProjectCard key={`r-${p.id}`} p={p} />
           ))}
         </Marquee>
       </div>

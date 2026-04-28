@@ -26,10 +26,10 @@ module.exports = {
       keyframes: {
         marquee: {
           from: { transform: 'translateX(0)' },
-          to: { transform: 'translateX(calc(-100% - 1.5rem))' },
+          to: { transform: 'translateX(calc(-100% - 2.5rem))' },
         },
         'marquee-reverse': {
-          from: { transform: 'translateX(calc(-100% - 1.5rem))' },
+          from: { transform: 'translateX(calc(-100% - 2.5rem))' },
           to: { transform: 'translateX(0)' },
         },
         fadeIn: {
