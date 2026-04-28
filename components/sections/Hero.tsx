@@ -39,7 +39,7 @@ export default function Hero() {
           src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1920&q=80"
           alt=""
           fill
-          className="object-cover opacity-25"
+          className="object-cover opacity-15"
           priority
           style={{
             maskImage: 'linear-gradient(180deg, transparent 0%, black 12%, black 75%, transparent 100%)',
@@ -81,9 +81,9 @@ export default function Hero() {
             >
               Tu web,
               <br />
-              <span className="gold-gradient">tu vendedor</span>
+              tu vendedor
               <br />
-              24/7.
+              <span className="gold-gradient">24/7.</span>
             </motion.h1>
 
             {/* Sub */}
