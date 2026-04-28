@@ -33,7 +33,7 @@ export default function Navbar() {
         {/* Logo */}
         <a href="#" className="font-syne text-xl font-bold tracking-tight">
           <span className="text-[#C9A84C]">K</span>
-          <span className="text-stone-900">Web</span>
+          <span className={scrolled ? 'text-stone-900' : 'text-white'}>Web</span>
         </a>
 
         {/* Desktop nav */}
@@ -42,7 +42,11 @@ export default function Navbar() {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors duration-200"
+              className={`text-sm font-medium transition-colors duration-200 ${
+                scrolled
+                  ? 'text-stone-500 hover:text-stone-900'
+                  : 'text-white/60 hover:text-white'
+              }`}
             >
               {link.label}
             </a>
@@ -69,9 +73,9 @@ export default function Navbar() {
           className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
           aria-label="Menú"
         >
-          <motion.span animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }} className="block w-6 h-0.5 bg-stone-900" />
-          <motion.span animate={menuOpen ? { opacity: 0 } : { opacity: 1 }} className="block w-6 h-0.5 bg-stone-900" />
-          <motion.span animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }} className="block w-6 h-0.5 bg-stone-900" />
+          <motion.span animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }} className={`block w-6 h-0.5 ${scrolled ? 'bg-stone-900' : 'bg-white'}`} />
+          <motion.span animate={menuOpen ? { opacity: 0 } : { opacity: 1 }} className={`block w-6 h-0.5 ${scrolled ? 'bg-stone-900' : 'bg-white'}`} />
+          <motion.span animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }} className={`block w-6 h-0.5 ${scrolled ? 'bg-stone-900' : 'bg-white'}`} />
         </button>
       </div>
 
