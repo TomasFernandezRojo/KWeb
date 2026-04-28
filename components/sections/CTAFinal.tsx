@@ -1,21 +1,32 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import NeuralBackground from '@/components/ui/flow-field-background'
 
 const WA_LINK = 'https://wa.me/5493072074300'
 
 export default function CTAFinal() {
   return (
     <section id="contacto" className="py-24 md:py-36 bg-[#0A0A0A] relative overflow-hidden">
-      {/* Gold glow */}
+      {/* Animated particle field */}
+      <div className="absolute inset-0 pointer-events-none">
+        <NeuralBackground
+          color="#C9A84C"
+          trailOpacity={0.12}
+          particleCount={450}
+          speed={0.7}
+        />
+      </div>
+
+      {/* Subtle radial vignette to keep text readable in center */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none z-[1]"
         style={{
-          background: 'radial-gradient(ellipse 50% 60% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 60% 70% at 50% 50%, transparent 30%, rgba(10,10,10,0.55) 100%)',
         }}
       />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center" style={{ zIndex: 10 }}>
 
         {/* Badge */}
         <motion.div
