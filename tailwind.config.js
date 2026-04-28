@@ -19,18 +19,18 @@ module.exports = {
         jakarta: ['Plus Jakarta Sans', 'sans-serif'],
       },
       animation: {
-        marquee: 'marquee 25s linear infinite',
-        'marquee-reverse': 'marquee-reverse 25s linear infinite',
+        marquee: 'marquee var(--duration, 35s) linear infinite',
+        'marquee-reverse': 'marquee-reverse var(--duration, 35s) linear infinite',
         'fade-in': 'fadeIn 0.6s ease-out forwards',
       },
       keyframes: {
         marquee: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-50%)' },
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(calc(-100% - 1.5rem))' },
         },
         'marquee-reverse': {
-          '0%': { transform: 'translateX(-50%)' },
-          '100%': { transform: 'translateX(0%)' },
+          from: { transform: 'translateX(calc(-100% - 1.5rem))' },
+          to: { transform: 'translateX(0)' },
         },
         fadeIn: {
           from: { opacity: '0', transform: 'translateY(20px)' },
