@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Propuesta Comercial — KWeb</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:      #C9A84C;
+      --gold-dim:  rgba(201,168,76,0.12);
+      --gold-line: rgba(201,168,76,0.25);
+      --bg:        #0C0C0C;
+      --bg-card:   #141414;
+      --bg-card2:  #1A1A1A;
+      --text:      #F0EDE8;
+      --muted:     rgba(240,237,232,0.45);
+      --border:    rgba(240,237,232,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── NOISE ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    .container {
+      position: relative; z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      padding: 52px 0 48px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .logo span { color: var(--gold); }
+
+    .header-meta {
+      text-align: right;
+    }
+    .header-meta p {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      line-height: 1.8;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 56px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px; height: 1px;
+      background: var(--gold);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--gold);
+    }
+
+    .hero p {
+      font-size: 0.97rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 52px 0 28px;
+    }
+
+    /* ── PRICING CARDS ── */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: border-color 0.25s;
+    }
+    .card:hover { border-color: var(--gold-line); }
+
+    .card.featured {
+      background: var(--gold-dim);
+      border-color: var(--gold-line);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .card-badge {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-line);
+      padding: 4px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+
+    .price {
+      margin-bottom: 6px;
+    }
+    .price .amount {
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+    .price .currency {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--gold);
+      margin-right: 4px;
+    }
+    .price .period {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-left: 6px;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+
+    .includes {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .includes li {
+      font-size: 0.85rem;
+      color: rgba(240,237,232,0.7);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+    .includes li::before {
+      content: '✓';
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.8rem;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 52px 0;
+    }
+
+    /* ── RESUMEN ── */
+    .resumen {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .resumen-title {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .resumen-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+    .resumen-row:last-child { border-bottom: none; }
+
+    .resumen-row .label {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .resumen-row .label strong {
+      display: block;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .resumen-row .val {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .resumen-row .val.gold { color: var(--gold); }
+
+    /* ── CTA ── */
+    .cta-section {
+      margin-top: 52px;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .cta-section h2 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--gold);
+    }
+
+    .cta-section p {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold);
+      color: #0C0C0C;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .cta-btn svg { width: 16px; height: 16px; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    footer .logo-sm {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    footer .logo-sm span { color: var(--gold); }
+    footer p {
+      font-size: 0.75rem;
+      color: rgba(240,237,232,0.25);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 520px) {
+      .card { padding: 24px; }
+      .card-header { flex-direction: column; }
+      header { flex-direction: column; }
+      .header-meta { text-align: left; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HEADER -->
+    <header>
+      <div class="logo">K<span>Web</span></div>
+      <div class="header-meta">
+        <p>Propuesta Comercial</p>
+        <p>Desarrollo Web Profesional</p>
+        <p>Mayo 2026</p>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="eyebrow">Propuesta de servicios</div>
+      <h1>Tu presencia digital,<br /><em>sin complicaciones.</em></h1>
+      <p>
+        En KWeb diseñamos y desarrollamos páginas web profesionales para negocios que quieren destacarse.
+        Sitios rápidos, modernos y pensados para convertir visitantes en clientes.
+        A continuación te detallamos nuestra propuesta y costos.
+      </p>
+    </section>
+
+    <!-- PRICING -->
+    <p class="section-label">Estructura de costos</p>
+
+    <div class="cards">
+
+      <!-- MAQUETA -->
+      <div class="card featured">
+        <div class="card-header">
+          <span class="card-title">Maqueta web</span>
+          <span class="card-badge">Paso inicial</span>
+        </div>
+        <div class="price">
+          <span class="currency">$</span><span class="amount">300.000</span>
+          <span class="period">pago único</span>
+        </div>
+        <p class="card-desc">
+          Diseñamos una muestra real de cómo quedaría tu página web — con tu identidad, tus colores y tu contenido.
+          La podés ver y mostrarle a quien quieras antes de avanzar. Sin compromisos.
+        </p>
+        <ul class="includes">
+          <li>Diseño personalizado con la identidad de tu negocio</li>
+          <li>Vista previa navegable y funcional</li>
+          <li>Secciones adaptadas a tu rubro</li>
+          <li>Versión mobile y desktop</li>
+          <li>Entrega en 7 días hábiles</li>
+        </ul>
+      </div>
+
+      <!-- MODIFICACIONES -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Modificaciones a la maqueta</span>
+          <span class="card-badge">Opcional</span>
+        </div>
+        <div class="price">
+          <span class="currency">$</span><span class="amount">50.000</span>
+          <span class="period">por ronda de cambios</span>
+        </div>
+        <p class="card-desc">
+          ¿Querés ajustar algo de la maqueta? Colores, secciones, textos, estructura —
+          cada ronda de modificaciones tiene un costo adicional.
+        </p>
+        <ul class="includes">
+          <li>Cambios de diseño, colores o tipografías</li>
+          <li>Agregado o eliminación de secciones</li>
+          <li>Ajustes de contenido y texto</li>
+          <li>Entrega revisada en 3 días hábiles</li>
+        </ul>
+      </div>
+
+      <!-- MANTENIMIENTO -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Mantenimiento mensual</span>
+          <span class="card-badge">Mensual</span>
+        </div>
+        <div class="price">
+          <span class="currency">$</span><span class="amount">40.000</span>
+          <span class="period">— 50.000 / mes</span>
+        </div>
+        <p class="card-desc">
+          Todo lo que necesitás para que tu web esté siempre online, segura y actualizada.
+          Sin sorpresas ni costos ocultos — un solo pago mensual lo cubre todo.
+        </p>
+        <ul class="includes">
+          <li>Hosting incluido (servidor de alta disponibilidad)</li>
+          <li>Dominio (.com.ar, .com o similar)</li>
+          <li>Certificado SSL (candado de seguridad HTTPS)</li>
+          <li>Actualizaciones de contenido a pedido</li>
+          <li>Soporte técnico ante cualquier inconveniente</li>
+          <li>Backups periódicos</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- RESUMEN -->
+    <p class="section-label" style="margin-top:40px;">Resumen de inversión</p>
+    <div class="resumen">
+      <p class="resumen-title">Desglose</p>
+
+      <div class="resumen-row">
+        <div class="label">
+          <strong>Maqueta web</strong>
+          Diseño inicial — pago único
+        </div>
+        <div class="val">$300.000</div>
+      </div>
+
+      <div class="resumen-row">
+        <div class="label">
+          <strong>Modificaciones</strong>
+          Por ronda, si aplica
+        </div>
+        <div class="val">$50.000 c/u</div>
+      </div>
+
+      <div class="resumen-row">
+        <div class="label">
+          <strong>Mantenimiento mensual</strong>
+          Hosting · dominio · seguridad · actualizaciones
+        </div>
+        <div class="val gold">$40.000 — $50.000</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <h2>¿Te parece bien?<br /><em>Hablemos.</em></h2>
+      <p>
+        Si estás de acuerdo con la propuesta o querés ajustar algún detalle,
+        coordinamos una llamada corta para contarte más, aclarar dudas y cerrar los números juntos.
+        Sin presión, sin compromiso.
+      </p>
+      <a href="https://wa.me/5493072074300?text=Hola%2C%20vi%20la%20propuesta%20de%20KWeb%20y%20me%20interesa%20coordinar%20una%20llamada." class="cta-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.532 5.838L.054 23.486a.5.5 0 00.6.634l5.798-1.521A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 01-5.031-1.375l-.36-.214-3.732.979.996-3.638-.235-.374A9.865 9.865 0 012.1 12C2.1 6.533 6.533 2.1 12 2.1S21.9 6.533 21.9 12 17.467 21.9 12 21.9z"/>
+        </svg>
+        Quiero coordinar una llamada
+      </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="logo-sm">K<span>Web</span></div>
+      <p>Desarrollo web profesional · Argentina · 2026</p>
+    </footer>
+
+  </div>
+</body>
+</html>

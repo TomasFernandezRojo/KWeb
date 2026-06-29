@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "fuente": "https://www.lugarcba.com/Propiedades (Tokko Broker)",
+    "scrapeado": "2026-06-29",
+    "patron_ficha": "https://www.lugarcba.com/p/[ID]-[titulo]",
+    "cdn_fotos": "static.tokkobroker.com",
+    "total_catalogo": 82,
+    "nota": "20 primeras scrapeadas. Fotos reales pendientes de fetch por ficha individual."
+  },
+  "propiedades": [
+    { "id": "7945710", "tipo": "Casa", "operacion": "Venta", "precio": "USD 88.000", "barrio": "Alta Córdoba", "m2": 200, "ambientes": 3, "dormitorios": 3, "url": "/p/7945710-Casa-en-Venta-en-Alta-Cordoba-Bartolome-Argensola-al-500" },
+    { "id": "7091018", "tipo": "Departamento", "operacion": "Venta", "precio": "USD 77.000", "barrio": "Nueva Córdoba", "m2": 36, "ambientes": 1, "dormitorios": null, "url": "/p/7091018-Departamento-en-Venta-en-Nueva-Cordoba-Rondeau-al-100" },
+    { "id": "8416920", "tipo": "Departamento", "operacion": "Venta", "precio": "USD 54.000", "barrio": "Alberdi", "m2": 39.2, "ambientes": 2, "dormitorios": 1, "url": "/p/8416920-Departamento-en-Venta-en-Alberdi-Dean-Funes-al-1229" },
+    { "id": "7927207", "tipo": "Departamento", "operacion": "Alquiler", "precio": "$850.000", "barrio": "Nueva Córdoba", "m2": 40, "ambientes": 2, "dormitorios": 1, "url": "/p/7927207-Departamento-en-Alquiler-en-Nueva-Cordoba-Bv.-San-Juan--49" },
+    { "id": "756991", "tipo": "Departamento", "operacion": "Alquiler", "precio": "$870.000", "barrio": "Nueva Córdoba", "m2": 48, "ambientes": 2, "dormitorios": 1, "url": "/p/756991-Departamento-en-Alquiler-en-Nueva-Cordoba-Independencia--al-870" },
+    { "id": "2147778", "tipo": "Casa", "operacion": "Venta", "precio": "USD 172.000", "barrio": "Tejas II", "m2": 120, "ambientes": 3, "dormitorios": 3, "url": "/p/2147778-Casa-en-Venta-en-Tejas-ll-LA-PAYA-II" },
+    { "id": "6113936", "tipo": "Departamento", "operacion": "Alquiler", "precio": "$1.000.000", "barrio": "Nueva Córdoba", "m2": 65, "ambientes": 3, "dormitorios": 2, "url": "/p/6113936-Departamento-en-Alquiler-en-Nueva-Cordoba-Ambrosio-Olmos-al-900" },
+    { "id": "3813946", "tipo": "Departamento", "operacion": "Alquiler", "precio": "$700.000", "barrio": "Centro", "m2": 45, "ambientes": 2, "dormitorios": 1, "url": "/p/3813946-Departamento-en-Alquiler-en-Centro-Santa-Rosa-al-400" },
+    { "id": "4780295", "tipo": "Departamento", "operacion": "Alquiler Temporario", "precio": "$90.000", "barrio": "General Paz", "m2": 65, "ambientes": 2, "dormitorios": 1, "url": "/p/4780295-Departamento-en-Alquiler-temporario-en-General-Paz-Viamonte-al-400" },
+    { "id": "8383981", "tipo": "Departamento", "operacion": "Alquiler", "precio": "$700.000", "barrio": "Nueva Córdoba", "m2": 35, "ambientes": 2, "dormitorios": 1, "url": "/p/8383981-Departamento-en-Alquiler-en-Nueva-Cordoba-Balcarce-al-400" },
+    { "id": "6128587", "tipo": "Departamento", "operacion": "Alquiler / Temporario", "precio": "$1.800.000", "barrio": "Nueva Córdoba", "m2": 44, "ambientes": 2, "dormitorios": 1, "url": "/p/6128587-Departamento-en-Alquiler-Alquiler-temporario-en-Nueva-Cordoba-Obispo-Trejo--al-800" },
+    { "id": "5881489", "tipo": "Departamento", "operacion": "Alquiler Temporario", "precio": "$105.000", "barrio": "Nueva Córdoba", "m2": 45, "ambientes": 2, "dormitorios": 1, "url": "/p/5881489-Departamento-en-Alquiler-temporario-en-Nueva-Cordoba-Estrada--100" },
+    { "id": "6174291", "tipo": "Departamento", "operacion": "Alquiler Temporario", "precio": "$110.000", "barrio": "Cerro de las Rosas", "m2": 75, "ambientes": 4, "dormitorios": 3, "url": "/p/6174291-Departamento-en-Alquiler-temporario-en-Cerro-De-Las-Rosas-Nicolas-Berrotaran--al-1500" },
+    { "id": "756935", "tipo": "Departamento", "operacion": "Alquiler Temporario", "precio": "$85.000", "barrio": "Nueva Córdoba", "m2": 48, "ambientes": 1, "dormitorios": null, "url": "/p/756935" }
+  ]
+}

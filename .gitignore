@@ -36,3 +36,16 @@ Thumbs.db
 # Claude Code local settings
 .claude/settings.local.json
 .claude/skills/
+
+# WhatsApp sender — sesión y datos personales (NUNCA subir)
+**/.wwebjs_auth/
+**/.wwebjs_cache/
+wa-sender/.wwebjs_auth/
+wa-sender/.wwebjs_cache/
+wa-sender/enviados.json
+
+# Deps / build / deploy recursivo (proyectos cliente)
+**/node_modules/
+**/.next/
+**/.vercel/
+**/out/

@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta — light editorial cálido */
+  --color-bone: #faf7f1;
+  --color-bone-2: #f3ecdf;
+  --color-cream: #fffdf8;
+  --color-ink: #211b14;
+  --color-ink-soft: #4a4034;
+  --color-muted: #7a6e5c;
+  --color-line: #e6dccb;
+  --color-clay: #b5512e;
+  --color-clay-deep: #8f3d20;
+  --color-clay-soft: #d98c63;
+  --color-olive: #6d6a4b;
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-hanken);
+
+  --radius-xl2: 1.75rem;
+}
+
+:root {
+  --bg: var(--color-bone);
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--color-bone);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: "ss01";
+}
+
+::selection {
+  background: var(--color-clay);
+  color: var(--color-cream);
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+/* ---- Efectos 21st.dev (CSS puro) ---- */
+
+/* Aurora cálida para el hero */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  animation: aurora-move 18s ease-in-out infinite alternate;
+}
+.aurora::before {
+  background: radial-gradient(circle, var(--color-clay-soft), transparent 70%);
+  top: -20%;
+  left: -10%;
+}
+.aurora::after {
+  background: radial-gradient(circle, #e9d9bf, transparent 70%);
+  bottom: -25%;
+  right: -10%;
+  animation-delay: -6s;
+}
+@keyframes aurora-move {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(6%, 8%) scale(1.15); }
+}
+
+/* Text generate (blur-in escalonado) */
+@keyframes blur-in {
+  from { opacity: 0; filter: blur(10px); transform: translateY(12px); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+.blur-in {
+  opacity: 0;
+  animation: blur-in 0.7s ease forwards;
+}
+
+/* Reveal on view */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Marquee de barrios */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+/* Columnas de testimonios en auto-scroll (estilo Lookstudio) */
+@keyframes vscroll {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+.vscroll {
+  animation: vscroll 32s linear infinite;
+}
+.vscroll-slow {
+  animation: vscroll 44s linear infinite;
+}
+.vscroll-rev {
+  animation: vscroll 38s linear infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora::before, .aurora::after,
+  .marquee-track, .vscroll, .vscroll-slow, .vscroll-rev { animation: none; }
+  .blur-in, .rise { animation: none; opacity: 1; }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

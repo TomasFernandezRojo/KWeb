@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KWebs — Propuesta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        oklch(10% 0.005 80);
+    --bg-2:      oklch(13% 0.005 80);
+    --ink:       oklch(93% 0.005 80);
+    --ink-2:     oklch(60% 0.005 80);
+    --ink-3:     oklch(36% 0.005 80);
+    --gold:      oklch(71% 0.12 80);
+    --gold-soft: oklch(71% 0.12 80 / 0.12);
+    --gold-line: oklch(71% 0.12 80 / 0.30);
+    --rule:      oklch(93% 0.005 80 / 0.09);
+    --cond: "Barlow Condensed", sans-serif;
+    --sans: "Barlow", sans-serif;
+    --page-w: 794px;
+    --page-h: 1123px;
+    --pad: 72px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  html, body {
+    background: oklch(7% 0.003 80);
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 32px 0 64px;
+  }
+
+  .page {
+    width: var(--page-w);
+    height: var(--page-h);
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    padding: var(--pad);
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 32px 80px -16px oklch(0% 0 0 / 0.75),
+      0 0 0 1px oklch(100% 0 0 / 0.04);
+  }
+
+  /* ── Chrome ── */
+  .meta {
+    position: absolute;
+    left: var(--pad);
+    right: var(--pad);
+    top: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .meta-mark {
+    font-family: var(--cond);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .meta-mark span { color: var(--gold); }
+  .meta-label {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .pagefoot {
+    position: absolute;
+    left: var(--pad);
+    right: var(--pad);
+    bottom: 34px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* ── Shared type ── */
+  .eyebrow {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .rule-h { height: 1px; background: var(--rule); }
+  .rule-gold { height: 1px; background: var(--gold-line); }
+  .rule-short { width: 48px; height: 2px; background: var(--gold); }
+
+  /* ══════════════════════════════════════
+     PAGE 1 — COVER
+  ══════════════════════════════════════ */
+  .cover { justify-content: space-between; }
+
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .cover-brand {
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .cover-brand span { color: var(--gold); }
+  .cover-doc {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-align: right;
+    line-height: 1.9;
+  }
+
+  .cover-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .cover-wordmark {
+    font-family: var(--cond);
+    font-weight: 800;
+    font-size: 152px;
+    line-height: 0.88;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+  }
+  .cover-wordmark-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    margin-bottom: 14px;
+    margin-left: 8px;
+  }
+
+  .cover-rule-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .cover-headline {
+    font-family: var(--cond);
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 1.12;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    max-width: 20ch;
+    text-transform: uppercase;
+  }
+  .cover-headline em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .cover-sub {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    max-width: 50ch;
+  }
+
+  .cover-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-block {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    line-height: 2;
+  }
+  .cover-bottom-block strong {
+    color: var(--ink-2);
+    font-weight: 500;
+    display: block;
+    font-size: 11.5px;
+  }
+  .cover-bottom .right { text-align: right; }
+
+  /* decorative corner */
+  .corner {
+    position: absolute;
+    top: var(--pad);
+    left: var(--pad);
+  }
+  .corner::before, .corner::after {
+    content: "";
+    position: absolute;
+    background: var(--gold);
+  }
+  .corner::before { width: 28px; height: 1.5px; top: 0; left: 0; }
+  .corner::after  { width: 1.5px; height: 28px; top: 0; left: 0; }
+
+  /* ══════════════════════════════════════
+     PAGE 2 — WHY
+  ══════════════════════════════════════ */
+  .why-head {
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .why-title {
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.08;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .why-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .why-stat-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    margin-top: 40px;
+    line-height: 1;
+  }
+  .why-num {
+    font-family: var(--cond);
+    font-weight: 800;
+    font-size: 210px;
+    letter-spacing: -0.04em;
+    color: var(--gold);
+    line-height: 0.85;
+  }
+  .why-pct {
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 80px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .why-quote {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 38ch;
+    margin-top: 24px;
+  }
+  .why-quote strong { font-weight: 600; color: var(--gold); }
+  .why-source {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-top: 12px;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: auto;
+    padding-top: 36px;
+    border-top: 1px solid var(--rule);
+  }
+  .why-card { display: flex; flex-direction: column; gap: 14px; }
+  .why-card .icn {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+  }
+  .why-card .lbl {
+    font-family: var(--cond);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .why-card .desc {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+
+  /* ══════════════════════════════════════
+     PAGE 3 — INCLUDED
+  ══════════════════════════════════════ */
+  .section-head {
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .section-title {
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.08;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .section-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .section-lede {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 14.5px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    max-width: 58ch;
+  }
+
+  .included-list {
+    margin-top: 40px;
+    border-top: 1px solid var(--rule);
+  }
+  .item {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding: 15px 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .item-num {
+    font-family: var(--cond);
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+  .item-txt {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 15.5px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .item-sub {
+    display: block;
+    font-weight: 300;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    margin-top: 3px;
+  }
+  .item-chk {
+    width: 16px;
+    height: 16px;
+    position: relative;
+  }
+  .item-chk::before {
+    content: "";
+    position: absolute;
+    width: 6px; height: 1.5px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    left: 1px; top: 10px;
+  }
+  .item-chk::after {
+    content: "";
+    position: absolute;
+    width: 11px; height: 1.5px;
+    background: var(--gold);
+    transform: rotate(-45deg);
+    left: 4px; top: 8px;
+  }
+
+  /* ══════════════════════════════════════
+     PAGE 4 — INVESTMENT
+  ══════════════════════════════════════ */
+  .inv-wrap {
+    margin-top: 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+  }
+  .inv-label {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .inv-price {
+    font-family: var(--cond);
+    font-weight: 800;
+    font-size: 150px;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .inv-price-cur {
+    font-family: var(--cond);
+    font-weight: 600;
+    font-size: 52px;
+    color: var(--gold);
+    margin-top: 16px;
+    margin-right: 4px;
+  }
+  .inv-note {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 48ch;
+    margin-top: 4px;
+  }
+  .inv-note strong { color: var(--ink); font-weight: 500; }
+
+  .inv-divider {
+    margin: 48px 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .inv-divider::before, .inv-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  .inv-divider-label {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .addon {
+    border: 1px solid var(--gold-line);
+    padding: 26px 30px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 28px;
+    background: var(--gold-soft);
+  }
+  .addon-badge {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .addon-name {
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .addon-desc {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-top: 10px;
+    max-width: 44ch;
+    line-height: 1.55;
+  }
+  .addon-price {
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 38px;
+    color: var(--gold);
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .addon-price small {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-2);
+    margin-left: 2px;
+  }
+
+  /* ══════════════════════════════════════
+     PAGE 5 — PROCESS
+  ══════════════════════════════════════ */
+  .timeline {
+    margin-top: 44px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 11px;
+    top: 14px;
+    bottom: 14px;
+    width: 1px;
+    background: var(--gold-line);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .step:last-child { border-bottom: 0; }
+  .step-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    position: relative;
+    z-index: 2;
+    margin-top: 3px;
+  }
+  .step-dot::after {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .step-badge {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .step-title {
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .step-desc {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    margin-top: 6px;
+    max-width: 42ch;
+    line-height: 1.55;
+  }
+  .step-when {
+    font-family: var(--cond);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-top: 5px;
+    white-space: nowrap;
+  }
+
+  /* ══════════════════════════════════════
+     PAGE 6 — EXAMPLES
+  ══════════════════════════════════════ */
+  .work-list {
+    margin-top: 44px;
+    border-top: 1px solid var(--rule);
+  }
+  .work {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 24px;
+    padding: 28px 4px;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+  }
+  .work-idx {
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 36px;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .work-name {
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .work-cat {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-top: 7px;
+  }
+  .work-url {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    text-align: right;
+  }
+  .work-url.muted {
+    color: var(--ink-3);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .work-footer {
+    margin-top: auto;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* ══════════════════════════════════════
+     PAGE 7 — CTA
+  ══════════════════════════════════════ */
+  .cta-page { justify-content: center; }
+  .cta-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 28px;
+  }
+  .cta-head {
+    font-family: var(--cond);
+    font-weight: 800;
+    font-size: 80px;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--ink);
+    max-width: 14ch;
+  }
+  .cta-head em { font-style: normal; color: var(--gold); }
+  .cta-body {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    max-width: 46ch;
+  }
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 32px;
+    border: 1.5px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    align-self: flex-start;
+    transition:
+      background 0.22s cubic-bezier(0.16,1,0.3,1),
+      color      0.22s cubic-bezier(0.16,1,0.3,1);
+  }
+  .cta-button:hover {
+    background: var(--gold);
+    color: var(--bg);
+  }
+  .cta-button:hover .cta-arrow,
+  .cta-button:hover .cta-arrow::after {
+    background: var(--bg);
+    border-color: var(--bg);
+  }
+  .cta-arrow {
+    width: 28px;
+    height: 1.5px;
+    background: var(--gold);
+    position: relative;
+    transition: background 0.22s cubic-bezier(0.16,1,0.3,1);
+  }
+  .cta-arrow::after {
+    content: "";
+    position: absolute;
+    right: 0; top: -3.5px;
+    width: 8px; height: 8px;
+    border-top: 1.5px solid var(--gold);
+    border-right: 1.5px solid var(--gold);
+    transform: rotate(45deg) translate(0, -1px);
+    transition: border-color 0.22s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .cta-contact {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .contact-label {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .contact-val {
+    font-family: var(--cond);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .contact-val span { color: var(--gold); }
+
+  /* ── Navigation ── */
+  .navstrip {
+    position: fixed;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 50;
+  }
+  .navstrip a {
+    width: 24px;
+    height: 16px;
+    display: grid;
+    place-items: center;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: oklch(100% 0 0 / 0.22);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .navstrip a:hover { color: var(--gold); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .cta-button, .cta-arrow, .cta-arrow::after { transition: none; }
+  }
+
+  @page { size: A4 portrait; margin: 0; }
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    html, body { background: #111108; }
+    .stack { gap: 0; padding: 0; }
+    .navstrip { display: none; }
+    .page {
+      box-shadow: none;
+      width: 210mm;
+      height: 297mm;
+      break-after: page;
+      background: #111108 !important;
+      color: #edede8 !important;
+    }
+    .page:last-child { break-after: auto; }
+    .cta-button { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navstrip" aria-hidden="true">
+  <a href="#p1">01</a>
+  <a href="#p2">02</a>
+  <a href="#p3">03</a>
+  <a href="#p4">04</a>
+  <a href="#p5">05</a>
+  <a href="#p6">06</a>
+  <a href="#p7">07</a>
+</nav>
+
+<div class="stack">
+
+  <!-- PAGE 1 — COVER -->
+  <section class="page cover" id="p1">
+    <span class="corner"></span>
+
+    <div class="cover-top">
+      <div class="cover-brand">K<span>·</span>WEB</div>
+      <div class="cover-doc">
+        Propuesta comercial · 2026<br>
+        Documento confidencial
+      </div>
+    </div>
+
+    <div class="cover-center">
+      <div class="cover-wordmark">
+        KWEB<span class="cover-wordmark-dot"></span>
+      </div>
+      <div class="cover-rule-row">
+        <div class="rule-short"></div>
+        <span class="eyebrow">Diseño y desarrollo web</span>
+      </div>
+      <h1 class="cover-headline">Tu presencia digital, lista <em>en 7 días.</em></h1>
+      <p class="cover-sub">Diseñamos y desarrollamos tu sitio web desde cero, adaptado a tu negocio. Sin templates, sin atajos.</p>
+    </div>
+
+    <div class="cover-bottom">
+      <div class="cover-bottom-block">
+        <span>Preparado para</span>
+        <strong>El cliente</strong>
+      </div>
+      <div class="cover-bottom-block right">
+        <span>kwebs.com.ar</span>
+        <strong>+54 9 307 207-4300</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 2 — WHY -->
+  <section class="page" id="p2">
+    <div class="meta">
+      <span class="meta-mark">K<span>·</span>WEB</span>
+      <span class="meta-label">02 — Por qué</span>
+    </div>
+
+    <div class="why-head">
+      <span class="eyebrow">El contexto</span>
+      <h2 class="why-title">El cliente busca<br><em>online.</em> Después llama.</h2>
+    </div>
+
+    <div class="why-stat-row">
+      <span class="why-num">68</span><span class="why-pct">%</span>
+    </div>
+    <p class="why-quote">de los clientes busca un negocio en Google <strong>antes de contactarlo.</strong></p>
+    <div class="why-source">Fuente · GoodFirms 2024 / Local Consumer Review</div>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="icn">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="18" cy="18" r="10" stroke="currentColor" stroke-width="1.3" style="color:var(--gold)"/>
+            <line x1="26" y1="26" x2="36" y2="36" stroke="currentColor" stroke-width="1.3" style="color:var(--gold)"/>
+          </svg>
+        </div>
+        <div class="lbl">Visibilidad en Google</div>
+        <div class="desc">Aparecés cuando te buscan por nombre o por lo que ofrecés.</div>
+      </div>
+      <div class="why-card">
+        <div class="icn">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="5" y="8" width="30" height="21" stroke="currentColor" stroke-width="1.3" style="color:var(--gold)"/>
+            <line x1="5" y1="15" x2="35" y2="15" stroke="currentColor" stroke-width="1.3" style="color:var(--gold)"/>
+            <circle cx="9" cy="11.5" r="1" fill="currentColor" style="color:var(--gold)"/>
+            <circle cx="13" cy="11.5" r="1" fill="currentColor" style="color:var(--gold)"/>
+          </svg>
+        </div>
+        <div class="lbl">Credibilidad profesional</div>
+        <div class="desc">Una web propia dice más que mil seguidores. Confianza al instante.</div>
+      </div>
+      <div class="why-card">
+        <div class="icn">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="13" stroke="currentColor" stroke-width="1.3" style="color:var(--gold)"/>
+            <line x1="20" y1="9" x2="20" y2="20" stroke="currentColor" stroke-width="1.3" style="color:var(--gold)"/>
+            <line x1="20" y1="20" x2="28" y2="25" stroke="currentColor" stroke-width="1.3" style="color:var(--gold)"/>
+          </svg>
+        </div>
+        <div class="lbl">Clientes nuevos 24/7</div>
+        <div class="desc">Tu web vende mientras dormís, viajás o atendés a otros clientes.</div>
+      </div>
+    </div>
+
+    <div class="pagefoot">
+      <span>Propuesta · KWebs</span>
+      <span>02 / 07</span>
+    </div>
+  </section>
+
+  <!-- PAGE 3 — INCLUDED -->
+  <section class="page" id="p3">
+    <div class="meta">
+      <span class="meta-mark">K<span>·</span>WEB</span>
+      <span class="meta-label">03 — Alcance</span>
+    </div>
+
+    <div class="section-head">
+      <span class="eyebrow">Lo que recibís</span>
+      <h2 class="section-title">¿Qué incluye <em>tu web?</em></h2>
+      <p class="section-lede">Un paquete completo y cerrado. Todo lo necesario para salir a internet con una pieza profesional.</p>
+    </div>
+
+    <div class="included-list">
+      <div class="item">
+        <span class="item-num">01</span>
+        <span class="item-txt">Diseño 100% personalizado<span class="item-sub">Sin templates. Pensado exclusivamente para tu negocio.</span></span>
+        <span class="item-chk"></span>
+      </div>
+      <div class="item">
+        <span class="item-num">02</span>
+        <span class="item-txt">Hasta 5 secciones a medida</span>
+        <span class="item-chk"></span>
+      </div>
+      <div class="item">
+        <span class="item-num">03</span>
+        <span class="item-txt">Adaptada a celular y computadora</span>
+        <span class="item-chk"></span>
+      </div>
+      <div class="item">
+        <span class="item-num">04</span>
+        <span class="item-txt">Formulario de contacto integrado</span>
+        <span class="item-chk"></span>
+      </div>
+      <div class="item">
+        <span class="item-num">05</span>
+        <span class="item-txt">Botón de WhatsApp directo</span>
+        <span class="item-chk"></span>
+      </div>
+      <div class="item">
+        <span class="item-num">06</span>
+        <span class="item-txt">SEO básico<span class="item-sub">Configurado para aparecer en Google.</span></span>
+        <span class="item-chk"></span>
+      </div>
+      <div class="item">
+        <span class="item-num">07</span>
+        <span class="item-txt">Dominio incluido el primer año</span>
+        <span class="item-chk"></span>
+      </div>
+      <div class="item">
+        <span class="item-num">08</span>
+        <span class="item-txt">Hosting incluido el primer año</span>
+        <span class="item-chk"></span>
+      </div>
+      <div class="item">
+        <span class="item-num">09</span>
+        <span class="item-txt">2 rondas de revisiones</span>
+        <span class="item-chk"></span>
+      </div>
+      <div class="item">
+        <span class="item-num">10</span>
+        <span class="item-txt">Entrega en 7 días hábiles</span>
+        <span class="item-chk"></span>
+      </div>
+    </div>
+
+    <div class="pagefoot">
+      <span>Propuesta · KWebs</span>
+      <span>03 / 07</span>
+    </div>
+  </section>
+
+  <!-- PAGE 4 — INVESTMENT -->
+  <section class="page" id="p4">
+    <div class="meta">
+      <span class="meta-mark">K<span>·</span>WEB</span>
+      <span class="meta-label">04 — Inversión</span>
+    </div>
+
+    <div style="margin-top:64px;">
+      <span class="eyebrow">Inversión</span>
+      <h2 class="section-title" style="margin-top:16px;">Un precio, <em>una entrega.</em></h2>
+    </div>
+
+    <div class="inv-wrap">
+      <div class="inv-label">Sitio web completo · Pago único</div>
+      <div class="inv-price">
+        <span class="inv-price-cur">$</span>300.000
+      </div>
+      <p class="inv-note">
+        <strong>Pago único.</strong> Sin sorpresas, sin costos ocultos.<br>
+        50% para arrancar, 50% al entregar.
+      </p>
+    </div>
+
+    <div class="inv-divider">
+      <span class="inv-divider-label">Opcional</span>
+    </div>
+
+    <div class="addon">
+      <div>
+        <div class="addon-badge">Add-on · Recomendado</div>
+        <div class="addon-name">Mantenimiento mensual</div>
+        <div class="addon-desc">Actualizaciones de contenido, soporte técnico y renovación de hosting a partir del segundo año.</div>
+      </div>
+      <div class="addon-price">$45.000<small>/mes</small></div>
+    </div>
+
+    <div class="pagefoot">
+      <span>Propuesta · KWebs · Precios en ARS</span>
+      <span>04 / 07</span>
+    </div>
+  </section>
+
+  <!-- PAGE 5 — PROCESS -->
+  <section class="page" id="p5">
+    <div class="meta">
+      <span class="meta-mark">K<span>·</span>WEB</span>
+      <span class="meta-label">05 — Proceso</span>
+    </div>
+
+    <div class="section-head">
+      <span class="eyebrow">El proceso</span>
+      <h2 class="section-title">Así <em>trabajamos.</em></h2>
+      <p class="section-lede">Una semana. Cuatro hitos claros. Cero ambigüedad.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="step">
+        <span class="step-dot"></span>
+        <div>
+          <div class="step-badge">Etapa 01 · Descubrimiento</div>
+          <div class="step-title">Llamada de descubrimiento</div>
+          <div class="step-desc">30 minutos para conocer tu negocio, tu cliente y los objetivos del sitio. Sin compromiso.</div>
+        </div>
+        <div class="step-when">Día 1</div>
+      </div>
+      <div class="step">
+        <span class="step-dot"></span>
+        <div>
+          <div class="step-badge">Etapa 02 · Producción</div>
+          <div class="step-title">Diseño y desarrollo</div>
+          <div class="step-desc">Diseñamos cada sección desde cero y la convertimos en código. Trabajo en paralelo, sin interrupciones.</div>
+        </div>
+        <div class="step-when">Días 2 – 5</div>
+      </div>
+      <div class="step">
+        <span class="step-dot"></span>
+        <div>
+          <div class="step-badge">Etapa 03 · Revisión</div>
+          <div class="step-title">Presentación y feedback</div>
+          <div class="step-desc">Te mostramos la web terminada y aplicamos los ajustes en las rondas de revisión incluidas.</div>
+        </div>
+        <div class="step-when">Día 6</div>
+      </div>
+      <div class="step">
+        <span class="step-dot"></span>
+        <div>
+          <div class="step-badge">Etapa 04 · Lanzamiento</div>
+          <div class="step-title">Tu web está live</div>
+          <div class="step-desc">Publicamos en tu dominio, configuramos hosting y te entregamos accesos. Listos para vender.</div>
+        </div>
+        <div class="step-when">Día 7</div>
+      </div>
+    </div>
+
+    <div class="pagefoot">
+      <span>Propuesta · KWebs</span>
+      <span>05 / 07</span>
+    </div>
+  </section>
+
+  <!-- PAGE 6 — EXAMPLES -->
+  <section class="page" id="p6">
+    <div class="meta">
+      <span class="meta-mark">K<span>·</span>WEB</span>
+      <span class="meta-label">06 — Trabajos</span>
+    </div>
+
+    <div class="section-head">
+      <span class="eyebrow">Selección</span>
+      <h2 class="section-title">Trabajos <em>recientes.</em></h2>
+      <p class="section-lede">Una muestra de lo que estamos construyendo. Cada proyecto, pensado desde cero.</p>
+    </div>
+
+    <div class="work-list">
+      <div class="work">
+        <div class="work-idx">01</div>
+        <div>
+          <div class="work-name">Trigga</div>
+          <div class="work-cat">Agencia de automatizaciones · Sitio institucional</div>
+        </div>
+        <div class="work-url">trigga.vercel.app ↗</div>
+      </div>
+      <div class="work">
+        <div class="work-idx">02</div>
+        <div>
+          <div class="work-name">Kloths</div>
+          <div class="work-cat">Tienda de surfwear · E-commerce</div>
+        </div>
+        <div class="work-url">kloths.com.ar ↗</div>
+      </div>
+      <div class="work">
+        <div class="work-idx">03</div>
+        <div>
+          <div class="work-name">Casa Luciano</div>
+          <div class="work-cat">Hospitalidad · Sitio institucional</div>
+        </div>
+        <div class="work-url muted">En desarrollo</div>
+      </div>
+    </div>
+
+    <div class="work-footer">
+      <span>Más casos disponibles a pedido</span>
+      <span>kwebs.com.ar</span>
+    </div>
+
+    <div class="pagefoot">
+      <span>Propuesta · KWebs</span>
+      <span>06 / 07</span>
+    </div>
+  </section>
+
+  <!-- PAGE 7 — CTA -->
+  <section class="page cta-page" id="p7">
+    <div class="meta">
+      <span class="meta-mark">K<span>·</span>WEB</span>
+      <span class="meta-label">07 — Próximo paso</span>
+    </div>
+
+    <div class="cta-inner">
+      <span class="eyebrow">Próximo paso</span>
+      <h2 class="cta-head">¿Listo para tener <em>tu web?</em></h2>
+      <p class="cta-body">
+        Agendá una llamada gratuita de 15 minutos. Sin compromiso,
+        te contamos cómo sería tu proyecto y respondemos todas tus preguntas.
+      </p>
+      <a class="cta-button" href="https://wa.me/5493072074300" target="_blank" rel="noopener">
+        Agendá tu llamada
+        <span class="cta-arrow"></span>
+      </a>
+
+      <div class="cta-contact">
+        <div>
+          <div class="contact-label">WhatsApp</div>
+          <div class="contact-val">+54 9 307 <span>207-4300</span></div>
+        </div>
+        <div>
+          <div class="contact-label">Web</div>
+          <div class="contact-val">k-web-eight<span>.vercel.app</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagefoot">
+      <span>KWebs · Diseño & desarrollo</span>
+      <span>07 / 07</span>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

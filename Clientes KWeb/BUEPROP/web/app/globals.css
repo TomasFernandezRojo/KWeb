@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+:root {
+  --bg:        #FBFAF8;
+  --bg-2:      #F3F1EC;
+  --surface:   #FFFFFF;
+  --line:      rgba(20,17,15,0.12);
+  --line-soft: rgba(20,17,15,0.07);
+  --fg:        #16130F;
+  --fg-muted:  rgba(22,19,15,0.60);
+  --fg-faint:  rgba(22,19,15,0.40);
+  --gold:      #E11A22; /* acento rojo BUEPROP */
+  --gold-soft: rgba(225,26,34,0.10);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html { scroll-behavior: smooth; }
+
+::selection { background: var(--gold); color: #fff; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: #d8d4cc; border-radius: 8px; }
+
+.font-serif { font-family: var(--font-serif), Georgia, serif; }
+.label {
+  font-family: var(--font-sans), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+@keyframes zona-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.zona-track { display: flex; width: max-content; animation: zona-scroll 34s linear infinite; }
+.zona-track:hover { animation-play-state: paused; }
+
+.prop-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color .3s, box-shadow .3s, transform .3s;
+}
+.prop-card:hover {
+  border-color: rgba(225,26,34,0.4);
+  box-shadow: 0 18px 50px rgba(22,19,15,0.12);
+  transform: translateY(-4px);
+}
+.prop-card:hover .prop-img { transform: scale(1.06); }
+.prop-img { transition: transform .7s cubic-bezier(.22,1,.36,1); }
+
+.chip {
+  font-size: 0.82rem; font-weight: 500; letter-spacing: 0.01em;
+  padding: 0.5rem 1.1rem; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--fg-muted);
+  background: var(--surface); transition: all .2s; cursor: pointer; white-space: nowrap;
+}
+.chip:hover { color: var(--fg); border-color: rgba(225,26,34,0.4); }
+.chip[data-active="true"] { background: var(--gold); color: #fff; border-color: var(--gold); font-weight: 600; }
+
+.btn-gold {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--gold); color: #fff; font-weight: 600; letter-spacing: .01em;
+  padding: 0.85rem 1.6rem; border-radius: 999px;
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(225,26,34,0.28); background: #c8141c; }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: .5rem;
+  border: 1px solid var(--line); color: var(--fg);
+  padding: 0.85rem 1.6rem; border-radius: 999px;
+  transition: border-color .2s, background .2s;
+}
+.btn-ghost:hover { border-color: rgba(225,26,34,0.5); background: var(--gold-soft); }
+
+.nav-link { font-size: 0.82rem; letter-spacing: 0.02em; color: var(--fg-muted); transition: color .2s; }
+.nav-link:hover { color: var(--fg); }
+
+/* ── Testimonios: columnas con auto-scroll (21st.dev) ── */
+.tcol-cols {
+  display: flex; gap: 20px; height: 560px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+}
+.tcol-col {
+  flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 18px;
+  animation: tscroll var(--dur, 32s) linear infinite; will-change: transform;
+}
+.tcol-cols:hover .tcol-col { animation-play-state: paused; }
+@keyframes tscroll { to { transform: translateY(-50%); } }
+.tcard {
+  padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface);
+  box-shadow: 0 8px 26px rgba(22,19,15,.05);
+}
+@media (max-width: 1024px) { .tcol-col.col-3 { display: none; } }
+@media (max-width: 680px) { .tcol-col.col-2 { display: none; } .tcol-cols { height: 520px; } }
+@media (prefers-reduced-motion: reduce) { .tcol-col { animation: none; } }
+
+/* ── Servicios: tarjetas sticky que se apilan (21st.dev) ── */
+.sfeat {
+  position: sticky; top: 90px; display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(24px,4vw,48px); align-items: center; padding: clamp(24px,3.2vw,40px);
+  border-radius: 24px; margin-bottom: 26px; border: 1px solid var(--line);
+  background: var(--surface); box-shadow: 0 -14px 44px rgba(22,19,15,.13);
+}
+.sfeat:last-child { margin-bottom: 0; }
+.sfeat.alt .sfeat-text { order: 2; }
+.sfeat-media { aspect-ratio: 4/3; border-radius: 16px; overflow: hidden; }
+.sfeat-media img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 860px) {
+  .sfeat { grid-template-columns: 1fr; top: 76px; gap: 18px; }
+  .sfeat.alt .sfeat-text { order: 0; }
+  .sfeat-media { order: -1; }
+}

@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   OLIVAR — sistema de color (dark + verde olivar, OKLCH)
+   Neutros tintados hacia el verde. Acento dorado = aceite extra virgen.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --bg:         oklch(0.18 0.018 135);   /* verde-negro de olivar */
+  --bg-2:       oklch(0.21 0.020 135);
+  --surface:    oklch(0.24 0.022 134);
+  --surface-2:  oklch(0.28 0.024 132);
+
+  --line:       oklch(0.92 0.02 120 / 0.10);
+  --line-soft:  oklch(0.92 0.02 120 / 0.055);
+
+  --fg:         oklch(0.95 0.012 110);   /* off-white cálido */
+  --fg-muted:   oklch(0.95 0.012 110 / 0.60);
+  --fg-faint:   oklch(0.95 0.012 110 / 0.36);
+
+  --olive:      oklch(0.74 0.13 128);    /* verde oliva fresco (acento vivo) */
+  --olive-mid:  oklch(0.58 0.12 130);
+  --olive-deep: oklch(0.40 0.09 132);
+  --olive-soft: oklch(0.74 0.13 128 / 0.12);
+
+  --oil:        oklch(0.80 0.13 85);     /* oro del aceite extra virgen */
+  --oil-deep:   oklch(0.72 0.13 80);
+  --oil-soft:   oklch(0.80 0.13 85 / 0.14);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-olive: var(--olive);
+  --color-oil: var(--oil);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* grano + halo dorado sutil para dar atmósfera (no color plano) */
+  background-image:
+    radial-gradient(120% 80% at 80% -10%, var(--oil-soft), transparent 55%),
+    radial-gradient(90% 70% at -10% 10%, var(--olive-soft), transparent 50%);
+  background-attachment: fixed;
+}
+
+::selection { background: var(--oil); color: oklch(0.18 0.018 135); }
+::-webkit-scrollbar { width: 9px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--olive-deep); }
+
+/* ── Tipografía ───────────────────────────────────────────── */
+.font-serif { font-family: var(--font-serif), Georgia, serif; }
+
+.label {
+  font-family: var(--font-sans), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--oil);
+}
+
+.display {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+}
+
+/* ── Grano global ─────────────────────────────────────────── */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Botones ──────────────────────────────────────────────── */
+.btn-oil {
+  display: inline-flex; align-items: center; gap: .55rem;
+  background: var(--oil); color: oklch(0.20 0.02 135);
+  font-weight: 600; letter-spacing: .01em;
+  padding: 0.9rem 1.7rem; border-radius: 999px;
+  transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, background .25s;
+}
+.btn-oil:hover { transform: translateY(-2px); box-shadow: 0 14px 38px var(--oil-soft); background: var(--oil-deep); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: .55rem;
+  border: 1px solid var(--line); color: var(--fg);
+  padding: 0.9rem 1.7rem; border-radius: 999px;
+  transition: border-color .25s, background .25s, transform .25s;
+}
+.btn-ghost:hover { border-color: var(--olive); background: var(--olive-soft); transform: translateY(-2px); }
+
+.nav-link { font-size: 0.86rem; letter-spacing: 0.01em; color: var(--fg-muted); transition: color .2s; }
+.nav-link:hover { color: var(--fg); }
+
+/* ── Marquee de confianza ─────────────────────────────────── */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ── Tarjetas de producto ─────────────────────────────────── */
+.prod-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: border-color .35s, box-shadow .35s, transform .35s;
+}
+.prod-card:hover {
+  border-color: var(--olive);
+  box-shadow: 0 24px 70px oklch(0 0 0 / 0.55);
+  transform: translateY(-5px);
+}
+.prod-media {
+  aspect-ratio: 4 / 5;
+  position: relative;
+  overflow: hidden;
+}
+.prod-media .layer { transition: transform .8s cubic-bezier(.22,1,.36,1); }
+.prod-card:hover .prod-media .layer { transform: scale(1.05); }
+
+/* placeholder de imagen con textura del producto (reemplazable por foto real) */
+.media-aceite   { background:
+    radial-gradient(120% 90% at 30% 20%, oklch(0.82 0.13 90 / .85), transparent 60%),
+    linear-gradient(160deg, var(--oil-deep), var(--olive-deep)); }
+.media-aceituna { background:
+    radial-gradient(110% 90% at 70% 30%, oklch(0.50 0.11 132 / .9), transparent 60%),
+    linear-gradient(160deg, var(--olive-mid), oklch(0.22 0.04 135)); }
+.media-frutos   { background:
+    radial-gradient(110% 90% at 40% 25%, oklch(0.64 0.10 70 / .85), transparent 60%),
+    linear-gradient(160deg, oklch(0.45 0.08 60), var(--olive-deep)); }
+
+.tag {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em;
+  padding: 0.3rem 0.7rem; border-radius: 999px;
+  background: var(--surface-2); color: var(--fg-muted); border: 1px solid var(--line);
+}
+.tag.soon { color: var(--oil); border-color: var(--oil-soft); background: var(--oil-soft); }
+
+/* ── Opiniones: columnas con auto-scroll (efecto 21st.dev) ── */
+.opi-cols {
+  display: flex; gap: 16px; height: 560px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+}
+.opi-col {
+  flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px;
+  animation: opi-scroll var(--dur, 34s) linear infinite; will-change: transform;
+}
+.opi-col.rev { animation-direction: reverse; }
+.opi-cols:hover .opi-col { animation-play-state: paused; }
+@keyframes opi-scroll { to { transform: translateY(-50%); } }
+.opi-card {
+  padding: 22px; border: 1px solid var(--line); border-radius: 18px;
+  background: var(--surface);
+}
+.opi-card:hover { border-color: var(--olive); }
+.opi-avatar {
+  width: 40px; height: 40px; border-radius: 999px;
+  display: grid; place-items: center; flex-shrink: 0;
+  font-weight: 700; font-size: 0.95rem; color: oklch(0.18 0.018 135);
+}
+.opi-avatar.a-olive { background: var(--olive); }
+.opi-avatar.a-oil   { background: var(--oil); }
+/* 3 columnas desde 560px; en celular se ve 1 sola */
+@media (max-width: 560px) {
+  .opi-col.col-2, .opi-col.col-3 { display: none; }
+  .opi-cols { height: 520px; }
+}
+
+/* ── Hero: Aurora Background (efecto 21st.dev / Aceternity) ── */
+.aurora-wrap { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.aurora {
+  position: absolute; inset: -15%;
+  --aurora: repeating-linear-gradient(100deg,
+    var(--olive) 8%, var(--oil) 15%, var(--olive-mid) 22%,
+    oklch(0.72 0.14 150) 28%, var(--oil-deep) 34%);
+  --mask: repeating-linear-gradient(100deg,
+    #000 0%, #000 7%, transparent 10%, transparent 12%, #000 16%);
+  background-image: var(--mask), var(--aurora);
+  background-size: 300%, 200%;
+  background-position: 50% 50%, 50% 50%;
+  filter: blur(30px) saturate(1.15);
+  opacity: 0.34;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse at 72% -5%, #000 6%, transparent 62%);
+          mask-image: radial-gradient(ellipse at 72% -5%, #000 6%, transparent 62%);
+}
+.aurora::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--mask), var(--aurora);
+  background-size: 200%, 100%;
+  mix-blend-mode: difference;
+  animation: aurora 60s linear infinite;
+}
+@keyframes aurora {
+  from { background-position: 50% 50%, 50% 50%; }
+  to   { background-position: 350% 50%, 350% 50%; }
+}
+
+/* ── Texto: blur-in escalonado (efecto Text Generate 21st.dev) ── */
+.word-in {
+  display: inline-block;
+  opacity: 0; filter: blur(9px); transform: translateY(10px);
+  animation: word-in .8s cubic-bezier(.22,1,.36,1) forwards;
+}
+@keyframes word-in { to { opacity: 1; filter: blur(0); transform: none; } }
+
+/* ── Texto: Flip Words (efecto 21st.dev) ── */
+.flip-mask {
+  display: inline-block; height: 1.18em; line-height: 1.18em;
+  overflow: hidden; vertical-align: bottom; position: relative;
+}
+.flip-list {
+  display: flex; flex-direction: column;
+  animation: flip-words 9s cubic-bezier(.86,0,.07,1) infinite;
+}
+.flip-list span { height: 1.18em; line-height: 1.18em; white-space: nowrap; }
+@keyframes flip-words {
+  0%, 27%   { transform: translateY(0); }
+  33%, 60%  { transform: translateY(-1.18em); }
+  66%, 93%  { transform: translateY(-2.36em); }
+  100%      { transform: translateY(-3.54em); }
+}
+
+/* ── Mapa: filtro dark para que combine con el tema ───────── */
+.map-frame {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.map-dark {
+  filter: grayscale(0.35) invert(0.92) hue-rotate(180deg) brightness(0.92) contrast(0.92);
+  transition: filter .4s;
+}
+.map-frame:hover .map-dark { filter: grayscale(0.1) invert(0.92) hue-rotate(180deg) brightness(1) contrast(0.95); }
+
+/* ── Reveal on load / scroll ──────────────────────────────── */
+@keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+.rise { animation: rise .9s cubic-bezier(.22,1,.36,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track, .rise, .opi-col, .aurora::after, .flip-list { animation: none; }
+  .word-in { animation: none; opacity: 1; filter: none; transform: none; }
+  html { scroll-behavior: auto; }
+}

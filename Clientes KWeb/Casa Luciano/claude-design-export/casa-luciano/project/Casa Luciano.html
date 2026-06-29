@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casa Luciano — Estética Integral Unisex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #F5F0EB;
+      color: #1B2A6B;
+      overflow-x: hidden;
+    }
+    ::selection { background: #E8A0A0; color: #1B2A6B; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F5F0EB; }
+    ::-webkit-scrollbar-thumb { background: #C8BAB0; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "accentColor": "#E8A0A0",
+      "navyColor": "#1B2A6B",
+      "bgColor": "#F5F0EB",
+      "headingFont": "Cormorant Garamond",
+      "heroTagline": "Estética Integral Unisex",
+      "showLGBTQ": true,
+      "showPrices": false
+    }/*EDITMODE-END*/;
+
+    const { useState, useEffect, useRef } = React;
+
+    // ── SCHEDULE DATA ──────────────────────────────────────────────
+    const SCHEDULE = {
+      0: null,
+      1: { open: 9, close: 16 },
+      2: { open: 9, close: 20 },
+      3: { open: 9, close: 20 },
+      4: { open: 9, close: 20 },
+      5: { open: 9, close: 20 },
+      6: { open: 10, close: 18 },
+    };
+    const DAY_NAMES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+
+    function getAvailableSlots(date) {
+      const day = date.getDay();
+      const hours = SCHEDULE[day];
+      if (!hours) return [];
+      const slots = [];
+      for (let h = hours.open; h < hours.close; h++) {
+        slots.push(`${h.toString().padStart(2,'0')}:00`);
+        if (h + 0.5 < hours.close) slots.push(`${h.toString().padStart(2,'0')}:30`);
+      }
+      return slots;
+    }
+
+    // ── NAV ─────────────────────────────────────────────────────────
+    function Nav({ tweaks }) {
+      const [scrolled, setScrolled] = useState(false);
+      const [menuOpen, setMenuOpen] = useState(false);
+
+      useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 40);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+      }, []);
+
+      const links = [
+        { label: 'Servicios', href: '#servicios' },
+        { label: 'Galería', href: '#galeria' },
+        { label: 'Reseñas', href: '#resenas' },
+        { label: 'Turnos', href: '#turnos' },
+        { label: 'Contacto', href: '#contacto' },
+      ];
+
+      return (
+        <nav style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+          background: scrolled ? 'rgba(245,240,235,0.97)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          borderBottom: scrolled ? `1px solid ${tweaks.accentColor}33` : 'none',
+          transition: 'all 0.4s ease',
+          padding: '0 clamp(24px,5vw,80px)',
+          height: 72,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        }}>
+          <a href="#" style={{
+            fontFamily: tweaks.headingFont,
+            fontSize: 22, fontWeight: 500, letterSpacing: '0.04em',
+            color: tweaks.navyColor, textDecoration: 'none',
+          }}>
+            Casa Luciano
+          </a>
+
+          {/* Desktop links */}
+          <div style={{ display: 'flex', gap: 36, alignItems: 'center' }}>
+            {links.map(l => (
+              <a key={l.href} href={l.href} style={{
+                fontSize: 13, fontWeight: 400, letterSpacing: '0.08em',
+                textTransform: 'uppercase', color: tweaks.navyColor,
+                textDecoration: 'none', opacity: 0.7,
+                transition: 'opacity 0.2s',
+              }}
+              onMouseEnter={e => e.target.style.opacity = 1}
+              onMouseLeave={e => e.target.style.opacity = 0.7}
+              >{l.label}</a>
+            ))}
+            <a href="#turnos" style={{
+              background: tweaks.navyColor, color: tweaks.bgColor,
+              padding: '10px 24px', fontSize: 12, letterSpacing: '0.1em',
+              textTransform: 'uppercase', textDecoration: 'none',
+              fontWeight: 500, transition: 'background 0.2s',
+            }}
+            onMouseEnter={e => e.target.style.background = tweaks.accentColor}
+            onMouseLeave={e => e.target.style.background = tweaks.navyColor}
+            >Reservar turno</a>
+          </div>
+        </nav>
+      );
+    }
+
+    // ── HERO ────────────────────────────────────────────────────────
+    function Hero({ tweaks }) {
+      return (
+        <section style={{
+          minHeight: '100vh',
+          display: 'flex', flexDirection: 'column',
+          justifyContent: 'center', alignItems: 'flex-start',
+          padding: 'clamp(100px,12vh,160px) clamp(24px,8vw,140px) 80px',
+          position: 'relative', overflow: 'hidden',
+        }}>
+          {/* Decorative large letter */}
+          <div style={{
+            position: 'absolute', right: '-2vw', top: '50%',
+            transform: 'translateY(-50%)',
+            fontFamily: tweaks.headingFont, fontSize: 'clamp(220px,28vw,420px)',
+            fontWeight: 300, color: tweaks.accentColor, opacity: 0.12,
+            lineHeight: 1, pointerEvents: 'none', userSelect: 'none',
+            letterSpacing: '-0.05em',
+          }}>L</div>
+
+          {/* Thin top line */}
+          <div style={{
+            width: 48, height: 1, background: tweaks.accentColor, marginBottom: 32,
+          }}></div>
+
+          <p style={{
+            fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase',
+            color: tweaks.accentColor, fontWeight: 500, marginBottom: 20,
+          }}>Recoleta, Buenos Aires</p>
+
+          <h1 style={{
+            fontFamily: tweaks.headingFont,
+            fontSize: 'clamp(52px,8vw,120px)',
+            fontWeight: 300, lineHeight: 1.0,
+            color: tweaks.navyColor,
+            letterSpacing: '-0.02em',
+            maxWidth: 700,
+            marginBottom: 16,
+          }}>
+            Casa<br />
+            <em style={{ fontStyle: 'italic' }}>Luciano</em>
+          </h1>
+
+          <p style={{
+            fontFamily: tweaks.headingFont,
+            fontSize: 'clamp(18px,2.2vw,28px)',
+            fontWeight: 300, fontStyle: 'italic',
+            color: tweaks.navyColor, opacity: 0.6,
+            marginBottom: 52,
+            letterSpacing: '0.01em',
+          }}>{tweaks.heroTagline}</p>
+
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+            <a href="#turnos" style={{
+              background: tweaks.navyColor, color: tweaks.bgColor,
+              padding: '16px 40px', fontSize: 13, letterSpacing: '0.12em',
+              textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500,
+              transition: 'all 0.25s',
+            }}
+            onMouseEnter={e => { e.target.style.background = tweaks.accentColor; e.target.style.color = tweaks.navyColor; }}
+            onMouseLeave={e => { e.target.style.background = tweaks.navyColor; e.target.style.color = tweaks.bgColor; }}
+            >Sacar turno</a>
+
+            <a href="#galeria" style={{
+              border: `1px solid ${tweaks.navyColor}`,
+              color: tweaks.navyColor, padding: '16px 40px',
+              fontSize: 13, letterSpacing: '0.12em',
+              textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500,
+              transition: 'all 0.25s',
+            }}
+            onMouseEnter={e => { e.target.style.background = tweaks.navyColor; e.target.style.color = tweaks.bgColor; }}
+            onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.color = tweaks.navyColor; }}
+            >Ver trabajos</a>
+          </div>
+
+          {tweaks.showLGBTQ && (
+            <div style={{
+              marginTop: 48, display: 'flex', alignItems: 'center', gap: 10,
+              opacity: 0.5,
+            }}>
+              <span style={{ fontSize: 16 }}>🏳️‍🌈</span>
+              <span style={{ fontSize: 12, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Espacio seguro · Amigable con LGBTQ+</span>
+            </div>
+          )}
+
+          {/* Scroll indicator */}
+          <div style={{
+            position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+            opacity: 0.4,
+          }}>
+            <span style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase' }}>Scroll</span>
+            <div style={{
+              width: 1, height: 48, background: tweaks.navyColor,
+              animation: 'scrollLine 2s ease-in-out infinite',
+            }}></div>
+          </div>
+        </section>
+      );
+    }
+
+    // ── SERVICIOS ───────────────────────────────────────────────────
+    function Servicios({ tweaks }) {
+      const services = [
+        {
+          title: 'Corte de Pelo',
+          subtitle: 'Hombre & Mujer',
+          desc: 'Cortes personalizados para todo tipo de cabello. Asesoramiento incluido para encontrar el estilo ideal.',
+          icon: '✂',
+        },
+        {
+          title: 'Coloración',
+          subtitle: 'Coloración & Tratamientos',
+          desc: 'Mechas, balayage, tinturas y tratamientos de hidratación con productos de primera línea.',
+          icon: '◈',
+        },
+        {
+          title: 'Barbería',
+          subtitle: 'Corte & Barba',
+          desc: 'Servicio completo de barbería: corte, perfilado y afeitado clásico con navaja.',
+          icon: '◎',
+        },
+      ];
+
+      return (
+        <section id="servicios" style={{
+          padding: 'clamp(80px,10vh,140px) clamp(24px,8vw,140px)',
+          background: tweaks.navyColor,
+        }}>
+          <div style={{ marginBottom: 72 }}>
+            <p style={{
+              fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase',
+              color: tweaks.accentColor, marginBottom: 16,
+            }}>Nuestros servicios</p>
+            <h2 style={{
+              fontFamily: tweaks.headingFont,
+              fontSize: 'clamp(36px,5vw,72px)',
+              fontWeight: 300, color: tweaks.bgColor,
+              lineHeight: 1.1, letterSpacing: '-0.01em',
+            }}>Lo que hacemos,<br /><em>lo hacemos bien.</em></h2>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: 1,
+            background: `${tweaks.bgColor}18`,
+          }}>
+            {services.map((s, i) => (
+              <ServiceCard key={i} service={s} tweaks={tweaks} />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    function ServiceCard({ service, tweaks }) {
+      const [hovered, setHovered] = useState(false);
+      return (
+        <div
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          style={{
+            padding: '52px 40px',
+            background: hovered ? tweaks.accentColor + '15' : `${tweaks.bgColor}08`,
+            transition: 'background 0.3s',
+            cursor: 'default',
+          }}>
+          <div style={{
+            fontSize: 28, color: tweaks.accentColor,
+            marginBottom: 28, lineHeight: 1,
+          }}>{service.icon}</div>
+          <h3 style={{
+            fontFamily: tweaks.headingFont,
+            fontSize: 28, fontWeight: 400,
+            color: tweaks.bgColor, marginBottom: 6,
+            letterSpacing: '-0.01em',
+          }}>{service.title}</h3>
+          <p style={{
+            fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase',
+            color: tweaks.accentColor, marginBottom: 20, opacity: 0.8,
+          }}>{service.subtitle}</p>
+          <p style={{
+            fontSize: 14, lineHeight: 1.7,
+            color: tweaks.bgColor, opacity: 0.6,
+          }}>{service.desc}</p>
+        </div>
+      );
+    }
+
+    // ── GALERÍA ─────────────────────────────────────────────────────
+    function Galeria({ tweaks }) {
+      const photos = [
+        { src: 'uploads/pasted-1777846809964-0.png', label: 'Coloración — Balayage natural' },
+        { src: 'uploads/pasted-1777846849961-0.png', label: 'Coloración — Castaño con mechas' },
+        { src: 'uploads/pasted-1777846865405-0.png', label: 'Proceso de coloración' },
+      ];
+      const [active, setActive] = useState(null);
+
+      return (
+        <section id="galeria" style={{
+          padding: 'clamp(80px,10vh,140px) clamp(24px,8vw,140px)',
+        }}>
+          <div style={{ marginBottom: 64 }}>
+            <p style={{
+              fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase',
+              color: tweaks.accentColor, marginBottom: 16,
+            }}>Nuestro trabajo</p>
+            <h2 style={{
+              fontFamily: tweaks.headingFont,
+              fontSize: 'clamp(36px,5vw,72px)',
+              fontWeight: 300, color: tweaks.navyColor,
+              lineHeight: 1.1,
+            }}>Resultados que<br /><em>hablan solos.</em></h2>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: 12,
+          }}>
+            {photos.map((p, i) => (
+              <div key={i}
+                onClick={() => setActive(i)}
+                style={{
+                  aspectRatio: '3/4', overflow: 'hidden',
+                  cursor: 'pointer', position: 'relative',
+                  background: '#D6CFC9',
+                }}>
+                <img src={p.src} alt={p.label} style={{
+                  width: '100%', height: '100%',
+                  objectFit: 'cover', display: 'block',
+                  transition: 'transform 0.5s ease',
+                }}
+                onMouseEnter={e => e.target.style.transform = 'scale(1.04)'}
+                onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+                />
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0,
+                  padding: '40px 20px 20px',
+                  background: 'linear-gradient(transparent, rgba(27,42,107,0.7))',
+                }}>
+                  <p style={{
+                    fontSize: 12, color: '#F5F0EB', letterSpacing: '0.06em',
+                    fontFamily: tweaks.headingFont, fontStyle: 'italic', fontSize: 16,
+                  }}>{p.label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Lightbox */}
+          {active !== null && (
+            <div onClick={() => setActive(null)} style={{
+              position: 'fixed', inset: 0, zIndex: 200,
+              background: 'rgba(27,42,107,0.9)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'zoom-out',
+            }}>
+              <img src={photos[active].src} alt="" style={{
+                maxWidth: '88vw', maxHeight: '88vh',
+                objectFit: 'contain',
+              }} />
+              <button onClick={e => { e.stopPropagation(); setActive((active + photos.length - 1) % photos.length); }}
+                style={{
+                  position: 'fixed', left: 24, top: '50%', transform: 'translateY(-50%)',
+                  background: 'none', border: '1px solid rgba(245,240,235,0.4)',
+                  color: '#F5F0EB', width: 48, height: 48, fontSize: 20, cursor: 'pointer',
+                }}>‹</button>
+              <button onClick={e => { e.stopPropagation(); setActive((active + 1) % photos.length); }}
+                style={{
+                  position: 'fixed', right: 24, top: '50%', transform: 'translateY(-50%)',
+                  background: 'none', border: '1px solid rgba(245,240,235,0.4)',
+                  color: '#F5F0EB', width: 48, height: 48, fontSize: 20, cursor: 'pointer',
+                }}>›</button>
+            </div>
+          )}
+        </section>
+      );
+    }
+
+    // ── RESEÑAS ─────────────────────────────────────────────────────
+    function Resenas({ tweaks }) {
+      const reviews = [
+        {
+          name: 'Ana Lippel',
+          rating: 5,
+          time: 'Hace 2 meses',
+          text: 'Tengo rulos y Luciano me hizo un corte divino, siempre me fue muy difícil encontrar buenos profesionales para mi pelo en Capital Federal. Ahora me quedo contenta que lo tengo a él. Además es muy simpático y amable. Lo recomiendo mucho.',
+        },
+        {
+          name: 'Vito',
+          rating: 5,
+          time: 'Hace 7 meses',
+          text: 'Hoy me fui a cortar el pelo por segunda vez y me fui muy satisfecho nuevamente. Muy buena onda todos y buenos peluqueros. Si sos chico y buscabas una peluquería que no hagan solo degrades esta es la mejor!',
+        },
+        {
+          name: 'Julia Mouriño',
+          rating: 5,
+          time: 'Hace 6 años',
+          text: 'Excelente lugar. Te tratan bárbaro, super amables, te asesoran para llegar al mejor resultado de lo que uno quiere. Tienen barbería. Nancy hace las uñas geniales. Los tratamientos para el pelo son de los mejor. Super recomiendo. Todo el staff es de 💕',
+        },
+      ];
+
+      return (
+        <section id="resenas" style={{
+          padding: 'clamp(80px,10vh,140px) clamp(24px,8vw,140px)',
+          background: tweaks.accentColor + '20',
+        }}>
+          <div style={{ marginBottom: 64 }}>
+            <p style={{
+              fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase',
+              color: tweaks.accentColor, marginBottom: 16,
+            }}>Lo que dicen</p>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 20, flexWrap: 'wrap' }}>
+              <h2 style={{
+                fontFamily: tweaks.headingFont,
+                fontSize: 'clamp(36px,5vw,72px)',
+                fontWeight: 300, color: tweaks.navyColor,
+                lineHeight: 1.1,
+              }}>4.6 <em style={{ fontSize: '60%', fontStyle: 'italic' }}>sobre 5</em></h2>
+              <p style={{ fontSize: 14, opacity: 0.6, color: tweaks.navyColor }}>97 reseñas en Google</p>
+            </div>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: 24,
+          }}>
+            {reviews.map((r, i) => (
+              <ReviewCard key={i} review={r} tweaks={tweaks} />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    function ReviewCard({ review, tweaks }) {
+      return (
+        <div style={{
+          background: tweaks.bgColor,
+          padding: '36px 32px',
+          border: `1px solid ${tweaks.accentColor}40`,
+        }}>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 20 }}>
+            {Array.from({ length: review.rating }).map((_, i) => (
+              <span key={i} style={{ color: tweaks.accentColor, fontSize: 14 }}>★</span>
+            ))}
+          </div>
+          <p style={{
+            fontSize: 15, lineHeight: 1.75, color: tweaks.navyColor,
+            opacity: 0.8, marginBottom: 24,
+            fontFamily: tweaks.headingFont, fontStyle: 'italic', fontSize: 17,
+          }}>"{review.text}"</p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontWeight: 500, fontSize: 13, color: tweaks.navyColor }}>{review.name}</span>
+            <span style={{ fontSize: 12, opacity: 0.45, color: tweaks.navyColor }}>{review.time}</span>
+          </div>
+        </div>
+      );
+    }
+
+    // ── BOOKING ─────────────────────────────────────────────────────
+    function Turnos({ tweaks }) {
+      const [step, setStep] = useState(1);
+      const [form, setForm] = useState({
+        service: '',
+        date: '',
+        time: '',
+        name: '',
+        phone: '',
+        notes: '',
+      });
+      const [availableSlots, setAvailableSlots] = useState([]);
+
+      const services = ['Corte de pelo (mujer)', 'Corte de pelo (hombre)', 'Coloración / Mechas', 'Balayage', 'Tratamiento capilar', 'Barbería', 'Barba'];
+
+      useEffect(() => {
+        if (form.date) {
+          const d = new Date(form.date + 'T12:00:00');
+          setAvailableSlots(getAvailableSlots(d));
+          setForm(f => ({ ...f, time: '' }));
+        }
+      }, [form.date]);
+
+      const today = new Date().toISOString().split('T')[0];
+
+      const getTodayDayInfo = () => {
+        if (!form.date) return null;
+        const d = new Date(form.date + 'T12:00:00');
+        const day = d.getDay();
+        const h = SCHEDULE[day];
+        if (!h) return { closed: true, name: DAY_NAMES[day] };
+        return { closed: false, name: DAY_NAMES[day], open: h.open, close: h.close };
+      };
+
+      const dayInfo = getTodayDayInfo();
+
+      const buildWhatsAppMessage = () => {
+        const msg = `Hola! Quisiera sacar un turno en Casa Luciano 💈\n\n👤 Nombre: ${form.name}\n📱 Teléfono: ${form.phone}\n✂️ Servicio: ${form.service}\n📅 Fecha: ${form.date}\n🕐 Horario: ${form.time}${form.notes ? `\n📝 Notas: ${form.notes}` : ''}`;
+        return `https://wa.me/5491122418941?text=${encodeURIComponent(msg)}`;
+      };
+
+      const inputStyle = {
+        width: '100%', padding: '14px 16px',
+        border: `1px solid ${tweaks.navyColor}30`,
+        background: 'transparent', color: tweaks.navyColor,
+        fontSize: 14, fontFamily: 'DM Sans, sans-serif',
+        outline: 'none', transition: 'border 0.2s',
+      };
+
+      return (
+        <section id="turnos" style={{
+          padding: 'clamp(80px,10vh,140px) clamp(24px,8vw,140px)',
+          background: tweaks.navyColor,
+        }}>
+          <div style={{ maxWidth: 680, margin: '0 auto' }}>
+            <p style={{
+              fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase',
+              color: tweaks.accentColor, marginBottom: 16, textAlign: 'center',
+            }}>Reservas</p>
+            <h2 style={{
+              fontFamily: tweaks.headingFont,
+              fontSize: 'clamp(36px,5vw,64px)',
+              fontWeight: 300, color: tweaks.bgColor,
+              lineHeight: 1.1, marginBottom: 12, textAlign: 'center',
+            }}>Sacá tu turno</h2>
+            <p style={{
+              fontSize: 14, color: tweaks.bgColor, opacity: 0.5,
+              textAlign: 'center', marginBottom: 56,
+            }}>Completá el formulario y te confirmamos por WhatsApp</p>
+
+            {/* Steps indicator */}
+            <div style={{ display: 'flex', gap: 0, marginBottom: 48 }}>
+              {[1,2,3].map(s => (
+                <div key={s} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                  <div style={{
+                    width: 32, height: 32,
+                    background: step >= s ? tweaks.accentColor : `${tweaks.bgColor}20`,
+                    color: step >= s ? tweaks.navyColor : `${tweaks.bgColor}60`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 13, fontWeight: 500,
+                    transition: 'all 0.3s',
+                    borderRadius: '50%',
+                  }}>{s}</div>
+                  <span style={{
+                    fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase',
+                    color: step >= s ? tweaks.accentColor : `${tweaks.bgColor}40`,
+                  }}>
+                    {s === 1 ? 'Servicio' : s === 2 ? 'Horario' : 'Confirmar'}
+                  </span>
+                  {s < 3 && (
+                    <div style={{
+                      position: 'absolute', display: 'none',
+                    }}></div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div style={{
+              background: `${tweaks.bgColor}08`,
+              border: `1px solid ${tweaks.bgColor}15`,
+              padding: '40px',
+            }}>
+
+              {/* STEP 1 */}
+              {step === 1 && (
+                <div>
+                  <h3 style={{
+                    fontFamily: tweaks.headingFont, fontSize: 24, fontWeight: 400,
+                    color: tweaks.bgColor, marginBottom: 28,
+                  }}>¿Qué servicio buscás?</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {services.map(s => (
+                      <button key={s} onClick={() => setForm(f => ({ ...f, service: s }))}
+                        style={{
+                          padding: '16px 20px', textAlign: 'left',
+                          background: form.service === s ? tweaks.accentColor : 'transparent',
+                          border: `1px solid ${form.service === s ? tweaks.accentColor : tweaks.bgColor + '25'}`,
+                          color: form.service === s ? tweaks.navyColor : tweaks.bgColor,
+                          fontSize: 14, cursor: 'pointer',
+                          fontFamily: 'DM Sans, sans-serif',
+                          transition: 'all 0.2s',
+                        }}>{s}</button>
+                    ))}
+                  </div>
+                  <div style={{ marginTop: 32, display: 'flex', justifyContent: 'flex-end' }}>
+                    <button onClick={() => form.service && setStep(2)}
+                      disabled={!form.service}
+                      style={{
+                        padding: '14px 36px', background: tweaks.accentColor,
+                        color: tweaks.navyColor, border: 'none', fontSize: 13,
+                        letterSpacing: '0.1em', textTransform: 'uppercase',
+                        cursor: form.service ? 'pointer' : 'not-allowed',
+                        opacity: form.service ? 1 : 0.4,
+                        fontFamily: 'DM Sans, sans-serif', fontWeight: 500,
+                      }}>Continuar →</button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 2 */}
+              {step === 2 && (
+                <div>
+                  <h3 style={{
+                    fontFamily: tweaks.headingFont, fontSize: 24, fontWeight: 400,
+                    color: tweaks.bgColor, marginBottom: 28,
+                  }}>¿Cuándo querés venir?</h3>
+
+                  <div style={{ marginBottom: 24 }}>
+                    <label style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: tweaks.accentColor, display: 'block', marginBottom: 10 }}>Fecha</label>
+                    <input type="date" min={today}
+                      value={form.date}
+                      onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
+                      style={{ ...inputStyle, colorScheme: 'dark' }}
+                      onFocus={e => e.target.style.borderColor = tweaks.accentColor}
+                      onBlur={e => e.target.style.borderColor = `${tweaks.navyColor}30`}
+                    />
+                    {dayInfo && (
+                      <p style={{
+                        fontSize: 12, marginTop: 8,
+                        color: dayInfo.closed ? '#ff8a8a' : tweaks.accentColor,
+                        opacity: 0.8,
+                      }}>
+                        {dayInfo.closed
+                          ? `${dayInfo.name}: cerrado`
+                          : `${dayInfo.name}: ${dayInfo.open}:00 — ${dayInfo.close}:00 hs`}
+                      </p>
+                    )}
+                  </div>
+
+                  {availableSlots.length > 0 && (
+                    <div style={{ marginBottom: 24 }}>
+                      <label style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: tweaks.accentColor, display: 'block', marginBottom: 10 }}>Horario preferido</label>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+                        {availableSlots.map(slot => (
+                          <button key={slot} onClick={() => setForm(f => ({ ...f, time: slot }))}
+                            style={{
+                              padding: '10px 4px', textAlign: 'center',
+                              background: form.time === slot ? tweaks.accentColor : 'transparent',
+                              border: `1px solid ${form.time === slot ? tweaks.accentColor : tweaks.bgColor + '25'}`,
+                              color: form.time === slot ? tweaks.navyColor : tweaks.bgColor,
+                              fontSize: 13, cursor: 'pointer',
+                              fontFamily: 'DM Sans, sans-serif',
+                              transition: 'all 0.15s',
+                            }}>{slot}</button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {form.date && dayInfo?.closed && (
+                    <p style={{ color: '#ff8a8a', fontSize: 14, textAlign: 'center', padding: '20px 0' }}>
+                      No atendemos los domingos. Por favor elegí otro día.
+                    </p>
+                  )}
+
+                  <div style={{ marginTop: 32, display: 'flex', justifyContent: 'space-between' }}>
+                    <button onClick={() => setStep(1)} style={{
+                      padding: '14px 28px', background: 'transparent',
+                      border: `1px solid ${tweaks.bgColor}30`,
+                      color: tweaks.bgColor, fontSize: 13,
+                      letterSpacing: '0.08em', textTransform: 'uppercase',
+                      cursor: 'pointer', fontFamily: 'DM Sans, sans-serif',
+                    }}>← Volver</button>
+                    <button onClick={() => form.date && form.time && setStep(3)}
+                      disabled={!form.date || !form.time}
+                      style={{
+                        padding: '14px 36px', background: tweaks.accentColor,
+                        color: tweaks.navyColor, border: 'none', fontSize: 13,
+                        letterSpacing: '0.1em', textTransform: 'uppercase',
+                        cursor: (form.date && form.time) ? 'pointer' : 'not-allowed',
+                        opacity: (form.date && form.time) ? 1 : 0.4,
+                        fontFamily: 'DM Sans, sans-serif', fontWeight: 500,
+                      }}>Continuar →</button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 3 */}
+              {step === 3 && (
+                <div>
+                  <h3 style={{
+                    fontFamily: tweaks.headingFont, fontSize: 24, fontWeight: 400,
+                    color: tweaks.bgColor, marginBottom: 28,
+                  }}>Tus datos</h3>
+
+                  {/* Summary */}
+                  <div style={{
+                    background: `${tweaks.accentColor}15`,
+                    border: `1px solid ${tweaks.accentColor}30`,
+                    padding: '16px 20px', marginBottom: 28,
+                    display: 'flex', gap: 24, flexWrap: 'wrap',
+                  }}>
+                    <div><span style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: tweaks.accentColor, opacity: 0.7 }}>Servicio</span><p style={{ color: tweaks.bgColor, fontSize: 14, marginTop: 4 }}>{form.service}</p></div>
+                    <div><span style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: tweaks.accentColor, opacity: 0.7 }}>Fecha</span><p style={{ color: tweaks.bgColor, fontSize: 14, marginTop: 4 }}>{form.date}</p></div>
+                    <div><span style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: tweaks.accentColor, opacity: 0.7 }}>Horario</span><p style={{ color: tweaks.bgColor, fontSize: 14, marginTop: 4 }}>{form.time} hs</p></div>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                    <div>
+                      <label style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: tweaks.accentColor, display: 'block', marginBottom: 8 }}>Nombre completo *</label>
+                      <input type="text" placeholder="Tu nombre"
+                        value={form.name}
+                        onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                        style={inputStyle}
+                        onFocus={e => e.target.style.borderColor = tweaks.accentColor}
+                        onBlur={e => e.target.style.borderColor = `${tweaks.navyColor}30`}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: tweaks.accentColor, display: 'block', marginBottom: 8 }}>Teléfono *</label>
+                      <input type="tel" placeholder="Ej: 11 1234-5678"
+                        value={form.phone}
+                        onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                        style={inputStyle}
+                        onFocus={e => e.target.style.borderColor = tweaks.accentColor}
+                        onBlur={e => e.target.style.borderColor = `${tweaks.navyColor}30`}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: tweaks.accentColor, display: 'block', marginBottom: 8 }}>Notas adicionales</label>
+                      <textarea placeholder="Algún detalle sobre tu pelo, preferencias, etc."
+                        value={form.notes}
+                        onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                        rows={3}
+                        style={{ ...inputStyle, resize: 'vertical' }}
+                        onFocus={e => e.target.style.borderColor = tweaks.accentColor}
+                        onBlur={e => e.target.style.borderColor = `${tweaks.navyColor}30`}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+                    <button onClick={() => setStep(2)} style={{
+                      padding: '14px 28px', background: 'transparent',
+                      border: `1px solid ${tweaks.bgColor}30`,
+                      color: tweaks.bgColor, fontSize: 13,
+                      letterSpacing: '0.08em', textTransform: 'uppercase',
+                      cursor: 'pointer', fontFamily: 'DM Sans, sans-serif',
+                    }}>← Volver</button>
+                    <a href={form.name && form.phone ? buildWhatsAppMessage() : '#'}
+                      target="_blank" rel="noopener noreferrer"
+                      onClick={e => { if (!form.name || !form.phone) e.preventDefault(); }}
+                      style={{
+                        padding: '14px 32px',
+                        background: (form.name && form.phone) ? '#25D366' : '#25D36660',
+                        color: '#fff', border: 'none', fontSize: 13,
+                        letterSpacing: '0.08em', textTransform: 'uppercase',
+                        cursor: (form.name && form.phone) ? 'pointer' : 'not-allowed',
+                        fontFamily: 'DM Sans, sans-serif', fontWeight: 500,
+                        textDecoration: 'none', display: 'inline-block',
+                        transition: 'background 0.2s',
+                      }}>
+                      <span style={{ marginRight: 8 }}>💬</span>
+                      Confirmar por WhatsApp
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // ── HORARIOS ─────────────────────────────────────────────────────
+    function HorariosBar({ tweaks }) {
+      const schedule = [
+        { day: 'Lunes', hours: '9:00 — 16:00' },
+        { day: 'Martes', hours: '9:00 — 20:00' },
+        { day: 'Miércoles', hours: '9:00 — 20:00' },
+        { day: 'Jueves', hours: '9:00 — 20:00' },
+        { day: 'Viernes', hours: '9:00 — 20:00' },
+        { day: 'Sábado', hours: '10:00 — 18:00' },
+        { day: 'Domingo', hours: 'Cerrado' },
+      ];
+      const today = new Date().getDay();
+      const dayMap = [6, 0, 1, 2, 3, 4, 5]; // JS 0=sun => index in schedule
+
+      return (
+        <section style={{
+          padding: 'clamp(60px,8vh,100px) clamp(24px,8vw,140px)',
+          background: tweaks.accentColor + '18',
+        }}>
+          <div style={{ maxWidth: 860, margin: '0 auto' }}>
+            <p style={{
+              fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase',
+              color: tweaks.accentColor, marginBottom: 16, textAlign: 'center',
+            }}>Horarios de atención</p>
+            <h2 style={{
+              fontFamily: tweaks.headingFont, fontSize: 'clamp(28px,3.5vw,48px)',
+              fontWeight: 300, color: tweaks.navyColor, textAlign: 'center', marginBottom: 48,
+            }}>Cuando estamos para vos</h2>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 8 }}>
+              {schedule.map((s, i) => (
+                <div key={i} style={{
+                  padding: '20px 12px', textAlign: 'center',
+                  background: dayMap[today] === i ? tweaks.navyColor : tweaks.bgColor,
+                  border: `1px solid ${tweaks.navyColor}15`,
+                  position: 'relative',
+                }}>
+                  {dayMap[today] === i && (
+                    <div style={{
+                      position: 'absolute', top: -1, left: 0, right: 0,
+                      height: 2, background: tweaks.accentColor,
+                    }}></div>
+                  )}
+                  <p style={{
+                    fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase',
+                    color: dayMap[today] === i ? tweaks.accentColor : tweaks.navyColor,
+                    opacity: dayMap[today] === i ? 1 : 0.5, marginBottom: 8,
+                  }}>{s.day}</p>
+                  <p style={{
+                    fontSize: 12, fontWeight: 500,
+                    color: dayMap[today] === i ? tweaks.bgColor : tweaks.navyColor,
+                    opacity: s.hours === 'Cerrado' ? 0.35 : 1,
+                    lineHeight: 1.4,
+                  }}>{s.hours}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // ── CONTACTO ─────────────────────────────────────────────────────
+    function Contacto({ tweaks }) {
+      return (
+        <section id="contacto" style={{
+          padding: 'clamp(80px,10vh,140px) clamp(24px,8vw,140px)',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 80,
+          alignItems: 'start',
+        }}>
+          <div>
+            <p style={{
+              fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase',
+              color: tweaks.accentColor, marginBottom: 16,
+            }}>Encontranos</p>
+            <h2 style={{
+              fontFamily: tweaks.headingFont,
+              fontSize: 'clamp(32px,4vw,56px)',
+              fontWeight: 300, color: tweaks.navyColor,
+              lineHeight: 1.15, marginBottom: 40,
+            }}>Juncal 2069,<br /><em>Recoleta</em></h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              <ContactItem icon="📍" label="Dirección" value="Juncal 2069, Recoleta, CABA" tweaks={tweaks} />
+              <ContactItem icon="📞" label="Teléfono" value="011 2241-8941" href="tel:+5491122418941" tweaks={tweaks} />
+              <ContactItem icon="💬" label="WhatsApp" value="Escribinos directo" href="https://wa.me/5491122418941" tweaks={tweaks} />
+            </div>
+
+            {tweaks.showLGBTQ && (
+              <div style={{
+                marginTop: 40, padding: '16px 20px',
+                border: `1px solid ${tweaks.accentColor}40`,
+                display: 'inline-flex', gap: 10, alignItems: 'center',
+              }}>
+                <span style={{ fontSize: 18 }}>🏳️‍🌈</span>
+                <div>
+                  <p style={{ fontSize: 12, fontWeight: 500, color: tweaks.navyColor }}>Espacio seguro</p>
+                  <p style={{ fontSize: 11, opacity: 0.5, color: tweaks.navyColor }}>Amigable con LGBTQ+ · Personas trans bienvenides</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Map embed placeholder */}
+          <div style={{
+            background: `${tweaks.navyColor}08`,
+            border: `1px solid ${tweaks.navyColor}12`,
+            aspectRatio: '1',
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+            gap: 12, position: 'relative', overflow: 'hidden',
+          }}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.0!2d-58.39!3d-34.58!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca9a3e6b89d7%3A0x0!2sJuncal%202069%2C%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1234567890"
+              width="100%" height="100%"
+              style={{ border: 0, display: 'block' }}
+              allowFullScreen=""
+              loading="lazy"
+              title="Casa Luciano en el mapa"
+            ></iframe>
+          </div>
+        </section>
+      );
+    }
+
+    function ContactItem({ icon, label, value, href, tweaks }) {
+      const content = (
+        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+          <span style={{ fontSize: 18, opacity: 0.7, marginTop: 2 }}>{icon}</span>
+          <div>
+            <p style={{ fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: tweaks.accentColor, opacity: 0.8, marginBottom: 4 }}>{label}</p>
+            <p style={{ fontSize: 15, color: tweaks.navyColor, fontWeight: 400 }}>{value}</p>
+          </div>
+        </div>
+      );
+      if (href) return <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block' }}>{content}</a>;
+      return <div>{content}</div>;
+    }
+
+    // ── FOOTER ───────────────────────────────────────────────────────
+    function Footer({ tweaks }) {
+      return (
+        <footer style={{
+          padding: '40px clamp(24px,8vw,140px)',
+          background: tweaks.navyColor,
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          flexWrap: 'wrap', gap: 16,
+        }}>
+          <div>
+            <p style={{ fontFamily: tweaks.headingFont, fontSize: 20, color: tweaks.bgColor, fontWeight: 400, letterSpacing: '0.02em' }}>Casa Luciano</p>
+            <p style={{ fontSize: 12, color: tweaks.bgColor, opacity: 0.4, marginTop: 4 }}>Estética integral unisex · Recoleta, Buenos Aires</p>
+          </div>
+          <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+            <a href="https://wa.me/5491122418941" target="_blank" rel="noopener noreferrer"
+              style={{ fontSize: 12, color: tweaks.bgColor, opacity: 0.5, textDecoration: 'none', letterSpacing: '0.06em', transition: 'opacity 0.2s' }}
+              onMouseEnter={e => e.target.style.opacity = 1}
+              onMouseLeave={e => e.target.style.opacity = 0.5}
+            >WhatsApp</a>
+            <a href="tel:+5491122418941"
+              style={{ fontSize: 12, color: tweaks.bgColor, opacity: 0.5, textDecoration: 'none', letterSpacing: '0.06em', transition: 'opacity 0.2s' }}
+              onMouseEnter={e => e.target.style.opacity = 1}
+              onMouseLeave={e => e.target.style.opacity = 0.5}
+            >Llamar</a>
+            <a href="#turnos"
+              style={{ padding: '10px 20px', background: tweaks.accentColor, color: tweaks.navyColor, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
+              Turno
+            </a>
+          </div>
+        </footer>
+      );
+    }
+
+    // ── TWEAKS PANEL ─────────────────────────────────────────────────
+    function AppTweaks({ tweaks, setTweak }) {
+      return (
+        <TweaksPanel>
+          <TweakSection label="Colores" />
+          <TweakColor label="Navy (principal)" value={tweaks.navyColor} onChange={v => setTweak('navyColor', v)} />
+          <TweakColor label="Acento durazno" value={tweaks.accentColor} onChange={v => setTweak('accentColor', v)} />
+          <TweakColor label="Fondo crema" value={tweaks.bgColor} onChange={v => setTweak('bgColor', v)} />
+          <TweakSection label="Contenido" />
+          <TweakText label="Tagline hero" value={tweaks.heroTagline} onChange={v => setTweak('heroTagline', v)} />
+          <TweakToggle label="Mostrar badge LGBTQ+" value={tweaks.showLGBTQ} onChange={v => setTweak('showLGBTQ', v)} />
+          <TweakSection label="Tipografía" />
+          <TweakSelect label="Fuente de títulos" value={tweaks.headingFont}
+            options={['Cormorant Garamond','Playfair Display','Libre Baskerville','Georgia']}
+            onChange={v => setTweak('headingFont', v)} />
+        </TweaksPanel>
+      );
+    }
+
+    // ── APP ──────────────────────────────────────────────────────────
+    function App() {
+      const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+      return (
+        <div style={{ background: tweaks.bgColor, minHeight: '100vh' }}>
+          <style>{`
+            @keyframes scrollLine {
+              0% { transform: scaleY(0); transform-origin: top; }
+              50% { transform: scaleY(1); transform-origin: top; }
+              51% { transform: scaleY(1); transform-origin: bottom; }
+              100% { transform: scaleY(0); transform-origin: bottom; }
+            }
+            input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.5; }
+          `}</style>
+
+          <Nav tweaks={tweaks} />
+          <Hero tweaks={tweaks} />
+          <Servicios tweaks={tweaks} />
+          <Galeria tweaks={tweaks} />
+          <Resenas tweaks={tweaks} />
+          <HorariosBar tweaks={tweaks} />
+          <Turnos tweaks={tweaks} />
+          <Contacto tweaks={tweaks} />
+          <Footer tweaks={tweaks} />
+
+          <AppTweaks tweaks={tweaks} setTweak={setTweak} />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

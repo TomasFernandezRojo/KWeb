@@ -1,0 +1,123 @@
+{
+ "venta": [
+  {
+   "op": "Venta",
+   "tipo": "Departamento",
+   "barrio": "Recoleta",
+   "direccion": "Departamento Recoleta Anchorena Y Juncal",
+   "precio": "U$S 245.000",
+   "amb": "2",
+   "sup": "60 m² | 646 ft²",
+   "dorm": null,
+   "banos": null,
+   "img": "https://cdn.crmprop.com/Multiple/R/E/C/df881787f19c3372!RECOLETA-Anchorena-y-Juncal-REC027-1h232.JPG",
+   "link": "https://bueprop.com/compraventa--departamento-recoleta-anchorena-y-juncal-rec027"
+  },
+  {
+   "op": "Venta",
+   "tipo": "Departamento",
+   "barrio": "Monserrat",
+   "direccion": "Departamento Monserrat Solis Y Chile",
+   "precio": "U$S 93.000",
+   "amb": "1",
+   "sup": "40 m² | 431 ft²",
+   "dorm": null,
+   "banos": null,
+   "img": "https://cdn.crmprop.com/Multiple/M/O/N/827d5b7cca3d8e7f!MONSERRAT-Solis-y-Chile-MON002-0h232.JPG",
+   "link": "https://bueprop.com/compraventa--departamento-monserrat-solis-y-chile-mon003"
+  },
+  {
+   "op": "Venta",
+   "tipo": "Departamento",
+   "barrio": "Recoleta",
+   "direccion": "Departamento Recoleta French Y Azcuenaga",
+   "precio": "U$S 290.000",
+   "amb": "3",
+   "sup": "140 m² | 1.507 ft²",
+   "dorm": null,
+   "banos": null,
+   "img": "https://cdn.crmprop.com/Multiple/D/e/p/574273afe8ac0095!Departamento-Recoleta-French-y-Azcuenaga-REC026-1h232.JPG",
+   "link": "https://bueprop.com/compraventa--departamento-recoleta-french-y-azcuenaga-rec026"
+  },
+  {
+   "op": "Venta",
+   "tipo": "Departamento",
+   "barrio": "Palermo",
+   "direccion": "Departamento Palermo Dr. Emilio Ravignani Y Paraguay",
+   "precio": "U$S 185.000",
+   "amb": "4",
+   "sup": "83 m² | 894 ft²",
+   "dorm": null,
+   "banos": null,
+   "img": "https://cdn.crmprop.com/Propiedad/1/61a2a45d531d15de!1h232.jpg",
+   "link": "https://bueprop.com/compraventa--departamento-palermo-dr.-emilio-ravignani-y-paraguay-pal010"
+  },
+  {
+   "op": "Venta",
+   "tipo": "Departamento",
+   "barrio": "Palermo",
+   "direccion": "Departamento Palermo Av. Cabildo Y Santo Dumont",
+   "precio": "U$S 125.000",
+   "amb": "3",
+   "sup": "53 m² | 571 ft²",
+   "dorm": null,
+   "banos": null,
+   "img": "https://cdn.crmprop.com/Propiedad/1/10200d21bbdd90bf!1h232.jpg",
+   "link": "https://bueprop.com/compraventa--departamento-palermo-av.-cabildo-y-santo-dumont-pal012"
+  },
+  {
+   "op": "Venta",
+   "tipo": "Departamento",
+   "barrio": "Belgrano",
+   "direccion": "Departamento Belgrano Av Cabildo Y Virrey Arredondo",
+   "precio": "U$S 180.000",
+   "amb": "2",
+   "sup": "44 m² | 474 ft²",
+   "dorm": null,
+   "banos": null,
+   "img": "https://cdn.crmprop.com/Propiedad/1/f9742f5964e3a5bc!1h232.jpg",
+   "link": "https://bueprop.com/compraventa--departamento-belgrano-av-cabildo-y-virrey-arredondo-bel004"
+  },
+  {
+   "op": "Venta",
+   "tipo": "Departamento",
+   "barrio": "Palermo",
+   "direccion": "Departamento Palermo Vidt Y Av Santa Fe",
+   "precio": "U$S 269.000",
+   "amb": "3",
+   "sup": "93 m² | 1.002 ft²",
+   "dorm": null,
+   "banos": null,
+   "img": "https://cdn.crmprop.com/Propiedad/1/5/2/20a6d3e064fd3c50!15227644h232.jpg",
+   "link": "https://bueprop.com/compraventa--departamento-palermo-vidt-y-av-santa-fe-pal011"
+  }
+ ],
+ "alquiler": [
+  {
+   "op": "Alquiler",
+   "tipo": "Departamento",
+   "barrio": "Monserrat",
+   "direccion": "Departamento Monserrat Solis Y Chile",
+   "precio": "$ 73.500.000",
+   "amb": "1",
+   "sup": "38 m² | 410 ft²",
+   "dorm": null,
+   "banos": null,
+   "img": "https://cdn.crmprop.com/Propiedad/M/O/N/df813985d7ba9b8e!MONSERRAT-Solis-y-Chile-MON002-1h232.JPG",
+   "link": "https://bueprop.com/alquiler--departamento-monserrat-solis-y-chile-mon002"
+  },
+  {
+   "op": "Alquiler",
+   "tipo": "Departamento",
+   "barrio": "Recoleta",
+   "direccion": "Departamento Recoleta Av. Las Heras Y Pte Uriburu",
+   "precio": "$ 75.000.000",
+   "amb": "1",
+   "sup": "40 m² | 431 ft²",
+   "dorm": null,
+   "banos": null,
+   "img": "https://cdn.crmprop.com/Multiple/R/E/C/7a4b1c2edf469918!RECOLETA-Av-Las-Heras-y-Pte-Uriburul-REC043-1h232.JPG",
+   "link": "https://bueprop.com/alquiler--departamento-recoleta-av.-las-heras-y-pte-uriburu-rec043"
+  }
+ ]
+}
