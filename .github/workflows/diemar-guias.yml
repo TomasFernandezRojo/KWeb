@@ -1,0 +1,39 @@
+name: Diemar · índice de guías (nocturno)
+
+# Cada noche baja el reporte_guias.xlsx de Setup, arma la agenda DNI/CUIT → guías
+# y la sube a Vercel Blob (URL fija) para que la web busque el tracking por documento.
+
+on:
+  schedule:
+    - cron: "30 6 * * *" # 06:30 UTC = 03:30 Argentina (Setup actualiza ~02:16)
+  workflow_dispatch: {} # permite correrlo a mano desde GitHub
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "Clientes KWeb/Diemar"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install openpyxl
+
+      - name: Descargar reporte_guias.xlsx
+        run: curl -sS --fail --max-time 300 -o reporte_guias.xlsx http://bi.sistemaexpreso.com.ar/reporte_guias.xlsx
+
+      - name: Armar la agenda DNI/CUIT → guías
+        run: python scripts/build_guias_index.py reporte_guias.xlsx guias-index.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install @vercel/blob
+
+      - name: Subir a Vercel Blob
+        run: node scripts/upload_index.mjs guias-index.json
+        env:
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
