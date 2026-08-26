@@ -22,24 +22,25 @@ function ArrowIcon({ className }: { className?: string }) {
   )
 }
 
-/** La placa con el logo real de la marca. Los logotipos son apaisados,
- *  así que la placa se adapta al ancho en vez de encajarlos en un cuadrado. */
-function LogoChip({ c }: { c: Cliente }) {
+/** La marca de la casa, al fondo de la tarjeta: grande y tenue, arrimada a
+ *  la derecha. Vive en la mitad de arriba, que es donde no hay texto. */
+function MarcaDeFondo({ c }: { c: Cliente }) {
   return (
-    <span
-      className="h-14 max-w-[168px] rounded-xl overflow-hidden flex items-center justify-center px-3 ring-1 ring-inset ring-white/15 shrink-0"
-      style={{ backgroundColor: c.logoBg }}
+    <div
+      aria-hidden="true"
+      className="absolute top-[17%] pointer-events-none select-none transition-transform duration-700 ease-out group-hover/card:scale-[1.06]"
+      style={{ width: c.markW, right: c.markRight, opacity: c.markOpacity }}
     >
       <Image
-        src={c.logo}
-        alt={`Logo de ${c.nombre}`}
-        width={256}
-        height={128}
+        src={c.mark}
+        alt=""
+        width={600}
+        height={300}
         // Los SVG se sirven tal cual: el optimizador de Next no los procesa.
-        unoptimized={c.logo.endsWith('.svg')}
-        className="h-8 w-auto max-w-[138px] object-contain"
+        unoptimized={c.mark.endsWith('.svg')}
+        className="w-full h-auto"
       />
-    </span>
+    </div>
   )
 }
 
@@ -55,13 +56,17 @@ function ProjectCard({ c }: { c: Cliente }) {
         className="absolute -top-1/4 -right-1/4 w-2/3 h-2/3 opacity-60 group-hover/card:opacity-100 transition-opacity duration-700"
         style={{ background: `radial-gradient(circle, ${c.accent}38 0%, transparent 65%)` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+      <MarcaDeFondo c={c} />
+      {/* La marca se apaga hacia abajo para que el texto siempre gane */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
 
       {/* Contenido */}
       <div className="absolute inset-0 p-6 flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <LogoChip c={c} />
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/60 mt-2 whitespace-nowrap shrink-0">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65 border border-white/20 px-2.5 py-1 rounded-full backdrop-blur-sm">
+            {c.categoria}
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/60 mt-1 whitespace-nowrap shrink-0">
             <span
               className="w-1.5 h-1.5 rounded-full"
               style={{
@@ -74,10 +79,6 @@ function ProjectCard({ c }: { c: Cliente }) {
         </div>
 
         <div>
-          <span className="inline-block text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65 border border-white/20 px-2.5 py-1 rounded-full backdrop-blur-sm mb-4">
-            {c.categoria}
-          </span>
-
           <h3 className="font-syne text-2xl font-extrabold text-white mb-2 tracking-tight">
             {c.nombre}
           </h3>
