@@ -1,146 +1,133 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Marquee } from '@/components/ui/marquee'
+import { clientes, type Cliente } from '@/lib/clientes'
 
 gsap.registerPlugin(ScrollTrigger)
 
-interface Project {
-  id: number
-  title: string
-  category: string
-  description: string
-  url: string | null
-  image: string
-  gradient: string
-  accentColor: string
-  tag: string
-  live: boolean
+/* Trama fina de puntos — textura de la tarjeta, sin foto de stock */
+const DOTS =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23ffffff' fill-opacity='0.16'/%3E%3C/svg%3E\")"
+
+function ArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+    </svg>
+  )
 }
 
-const projects: Project[] = [
-  {
-    id: 1,
-    title: 'Kloths',
-    category: 'Tienda Online',
-    description: 'E-commerce de surfwear con carrito, MercadoPago y gestión de stock en tiempo real.',
-    url: 'https://kloths.com.ar',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
-    gradient: 'linear-gradient(170deg, rgba(0,90,150,0.82) 0%, rgba(0,160,210,0.72) 55%, rgba(100,210,240,0.60) 100%)',
-    accentColor: '#00C8FF',
-    tag: 'kloths.com.ar',
-    live: true,
-  },
-  {
-    id: 2,
-    title: 'Trigga',
-    category: 'Agencia Web',
-    description: 'Landing institucional para agencia de automatizaciones con IA y workflows inteligentes.',
-    url: 'https://trigga.vercel.app',
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80',
-    gradient: 'linear-gradient(170deg, rgba(8,8,8,0.92) 0%, rgba(18,18,18,0.88) 55%, rgba(34,214,138,0.25) 100%)',
-    accentColor: '#22D68A',
-    tag: 'trigga.vercel.app',
-    live: true,
-  },
-  {
-    id: 3,
-    title: 'OnWay',
-    category: 'App Mobile',
-    description: 'Marketplace de crowdshipping — viajeros que llevan paquetes de camino.',
-    url: null,
-    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80',
-    gradient: 'linear-gradient(170deg, rgba(0,50,150,0.88) 0%, rgba(0,75,200,0.82) 55%, rgba(50,120,255,0.70) 100%)',
-    accentColor: '#5B9BFF',
-    tag: 'En desarrollo',
-    live: false,
-  },
-]
-
-function ProjectCard({ p }: { p: Project }) {
+/** La placa con el logo real de la marca. Los logotipos son apaisados,
+ *  así que la placa se adapta al ancho en vez de encajarlos en un cuadrado. */
+function LogoChip({ c }: { c: Cliente }) {
   return (
-    <a
-      href={p.url ?? undefined}
-      target={p.live ? '_blank' : undefined}
-      rel={p.live ? 'noopener noreferrer' : undefined}
-      aria-label={p.live ? `Ver ${p.title}` : `${p.title} — en desarrollo`}
-      className="group/card relative w-[300px] h-[400px] rounded-2xl overflow-hidden shrink-0 block"
-      style={{ cursor: p.live ? 'pointer' : 'default' }}
+    <span
+      className="h-14 max-w-[168px] rounded-xl overflow-hidden flex items-center justify-center px-3 ring-1 ring-inset ring-white/15 shrink-0"
+      style={{ backgroundColor: c.logoBg }}
     >
-      {/* Background photo */}
       <Image
-        src={p.image}
-        alt={p.title}
-        fill
-        className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
-        sizes="300px"
+        src={c.logo}
+        alt={`Logo de ${c.nombre}`}
+        width={256}
+        height={128}
+        // Los SVG se sirven tal cual: el optimizador de Next no los procesa.
+        unoptimized={c.logo.endsWith('.svg')}
+        className="h-8 w-auto max-w-[138px] object-contain"
       />
+    </span>
+  )
+}
 
-      {/* Color gradient overlay */}
-      <div className="absolute inset-0" style={{ background: p.gradient }} />
+function ProjectCard({ c }: { c: Cliente }) {
+  const enVivo = c.estado === 'produccion'
 
-      {/* Subtle noise texture */}
+  const contenido = (
+    <>
+      {/* Fondo teñido con el color de la marca */}
+      <div className="absolute inset-0" style={{ background: c.gradient }} />
+      <div className="absolute inset-0 opacity-40" style={{ backgroundImage: DOTS }} />
       <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        }}
+        className="absolute -top-1/4 -right-1/4 w-2/3 h-2/3 opacity-60 group-hover/card:opacity-100 transition-opacity duration-700"
+        style={{ background: `radial-gradient(circle, ${c.accent}38 0%, transparent 65%)` }}
       />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
 
-      {/* Content */}
+      {/* Contenido */}
       <div className="absolute inset-0 p-6 flex flex-col justify-between">
-        {/* Top */}
-        <div className="flex items-start justify-between">
-          <span className="text-xs font-semibold uppercase tracking-widest text-white/70 border border-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
-            {p.category}
+        <div className="flex items-start justify-between gap-3">
+          <LogoChip c={c} />
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/60 mt-2 whitespace-nowrap shrink-0">
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{
+                backgroundColor: enVivo ? c.accent : 'rgba(255,255,255,0.3)',
+                boxShadow: enVivo ? `0 0 10px ${c.accent}` : 'none',
+              }}
+            />
+            {enVivo ? 'En producción' : 'En desarrollo'}
           </span>
-
-          {/* External link icon — appears on hover */}
-          <div
-            className="w-7 h-7 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/card:opacity-100 translate-y-1 group-hover/card:translate-y-0 transition-all duration-300"
-            aria-hidden="true"
-          >
-            {p.live ? (
-              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-              </svg>
-            ) : (
-              <svg className="w-3 h-3 text-white/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-            )}
-          </div>
         </div>
 
-        {/* Bottom info */}
         <div>
-          <h3 className="font-syne text-3xl font-extrabold text-white mb-2 tracking-tight">
-            {p.title}
+          <span className="inline-block text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65 border border-white/20 px-2.5 py-1 rounded-full backdrop-blur-sm mb-4">
+            {c.categoria}
+          </span>
+
+          <h3 className="font-syne text-2xl font-extrabold text-white mb-2 tracking-tight">
+            {c.nombre}
           </h3>
-          <p className="text-white/55 text-sm leading-relaxed mb-4">
-            {p.description}
-          </p>
+          <p className="text-white/55 text-[13px] leading-relaxed mb-5">{c.resumen}</p>
 
-          <div className="flex items-center justify-between">
-            <span className="text-white/35 text-xs font-mono">{p.tag}</span>
-
-            {/* Animated CTA */}
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-white/35 text-[11px] font-mono truncate">{c.etiqueta}</span>
             <span
-              className="text-xs font-semibold flex items-center gap-1 translate-x-3 opacity-0 group-hover/card:translate-x-0 group-hover/card:opacity-100 transition-all duration-300"
-              style={{ color: p.accentColor }}
+              className="shrink-0 text-xs font-semibold flex items-center gap-1.5 md:translate-x-3 md:opacity-0 md:group-hover/card:translate-x-0 md:group-hover/card:opacity-100 transition-all duration-300"
+              style={{ color: c.accent }}
             >
-              {p.live ? 'Ver proyecto →' : 'Próximamente'}
+              {c.cta}
+              {c.href && <ArrowIcon className="w-3 h-3" />}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Border glow on hover */}
-      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover/card:ring-[#C9A84C]/35 transition-all duration-400" />
-    </a>
+      {/* Borde */}
+      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover/card:ring-white/25 transition-colors duration-400" />
+    </>
+  )
+
+  const clase =
+    'group/card relative w-[320px] h-[420px] rounded-2xl overflow-hidden shrink-0 block'
+
+  if (c.href && !c.externo) {
+    return (
+      <Link href={c.href} aria-label={`Ver el caso de ${c.nombre}`} className={clase}>
+        {contenido}
+      </Link>
+    )
+  }
+  if (c.href) {
+    return (
+      <a
+        href={c.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Ver el sitio de ${c.nombre}`}
+        className={clase}
+      >
+        {contenido}
+      </a>
+    )
+  }
+  return (
+    <div aria-label={`${c.nombre} — en desarrollo`} className={`${clase} cursor-default`}>
+      {contenido}
+    </div>
   )
 }
 
@@ -160,7 +147,7 @@ export default function Portfolio() {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: headerRef.current,
-            start: 'top 80%',
+            start: 'top 85%',
             toggleActions: 'play none none none',
           },
         }
@@ -171,25 +158,35 @@ export default function Portfolio() {
 
   return (
     <section id="portfolio" ref={sectionRef} className="py-24 md:py-32 bg-[#F7F6F3] overflow-hidden">
-      {/* Header — constrained */}
+      {/* Encabezado — contenido */}
       <div className="max-w-6xl mx-auto px-6">
-        <div ref={headerRef} className="mb-14" style={{ opacity: 0 }}>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#C9A84C] mb-3">Portfolio</p>
-          <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-stone-900 tracking-tight">
-            Proyectos reales.
-          </h2>
+        <div
+          ref={headerRef}
+          className="mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-5"
+          style={{ opacity: 0 }}
+        >
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#C9A84C] mb-3">
+              Con quién trabajamos
+            </p>
+            <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-stone-900 tracking-tight">
+              Clientes reales, en producción.
+            </h2>
+          </div>
+          <p className="text-stone-500 text-sm leading-relaxed max-w-xs">
+            No son maquetas. Son sistemas que empresas usan todos los días.
+          </p>
         </div>
       </div>
 
-      {/* Marquee — full bleed */}
+      {/* Marquee — a todo lo ancho */}
       <div className="relative w-full">
-        {/* Fade edges */}
         <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-20 bg-gradient-to-r from-[#F7F6F3] to-transparent" />
         <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-20 bg-gradient-to-l from-[#F7F6F3] to-transparent" />
 
-        <Marquee pauseOnHover className="[--duration:40s] py-4">
-          {projects.map((p) => (
-            <ProjectCard key={p.id} p={p} />
+        <Marquee pauseOnHover repeat={3} className="[--duration:70s] py-4">
+          {clientes.map((c) => (
+            <ProjectCard key={c.slug} c={c} />
           ))}
         </Marquee>
       </div>

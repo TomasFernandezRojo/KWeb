@@ -7,7 +7,7 @@ const WA_LINK = 'https://wa.me/5493072074300'
 
 const navLinks = [
   { label: 'Servicios', href: '#servicios' },
-  { label: 'Portfolio', href: '#portfolio' },
+  { label: 'Clientes', href: '#portfolio' },
   { label: 'Proceso', href: '#proceso' },
 ]
 
